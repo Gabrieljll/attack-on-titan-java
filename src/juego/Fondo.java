@@ -3,7 +3,7 @@ package juego;
 import java.awt.Color;
 import entorno.Entorno;
 
-public class fondo {
+public class Fondo {
 	private int[] posicion;
 	
 	//Methods
