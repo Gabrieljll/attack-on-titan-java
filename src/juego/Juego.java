@@ -14,10 +14,12 @@ public class Juego extends InterfaceJuego
 	
 	// Variables y métodos propios de cada grupo
 	Mikasa mikasa;
-	Proyectil[] proyectil;
-	Kyojin[] kyo;
+	Proyectil[] proyectiles;
+	Kyojin[] kyojines;
+	Obstaculo[] obstaculos;
 	colision c;
 	Random r = new Random();
+	Fondo fondo;
 	int vidas;
 
 	// ...
@@ -28,14 +30,21 @@ public class Juego extends InterfaceJuego
 		this.entorno = new Entorno(this, "Attack on Titan, Final Season - Grupo ... - v1", 800, 600);
 		
 		// Inicializar lo que haga falta para el juego
-		c = new colision();
-		mikasa = new Mikasa(100,100);
+		//c = new colision();
+		fondo = new Fondo();
+		mikasa = new Mikasa(400,300);
 		vidas=100;		
-		proyectil = new Proyectil[4];
-		kyo = new Kyojin[4];
-		for(int i =0; i<kyo.length;i++) {
-			kyo[i] = new Kyojin(r.nextInt(entorno.ancho()),r.nextInt(entorno.alto())-20,20,60);
+		proyectiles = new Proyectil[4];
+		kyojines = new Kyojin[4];
+		for(int i =0; i<kyojines.length;i++) {
+			kyojines[i] = new Kyojin(r.nextInt(entorno.ancho()),r.nextInt(entorno.alto())-20,20,60);
 		}
+		obstaculos = new Obstaculo[4];
+		obstaculos[0] = new Obstaculo(600,150); //árbol
+		obstaculos[1] = new Obstaculo(200,180); //casa
+		obstaculos[2] = new Obstaculo(500,320); //casa
+		obstaculos[3] = new Obstaculo(150,460); //árbol
+		
 	
 		
 			
@@ -56,28 +65,33 @@ public class Juego extends InterfaceJuego
 	public void tick()
 	{
 		// Procesamiento de un instante de tiempo
+		fondo.dibujarse(this.entorno);
 		
-
+		obstaculos[0].dibArbol(entorno);
+		obstaculos[1].dibCasa(entorno);
+		obstaculos[2].dibCasa2(entorno);
+		obstaculos[3].dibArbol(entorno);
+		
 		//Mikassa 
 		mikasa.mover(entorno);
 		mikasa.dibujarse(entorno);
 		mikasa.limiteDeCiudad(entorno);
-		mikasa.disparar(entorno,this.proyectil);
+		mikasa.disparar(entorno,this.proyectiles);
 		
 		//Proyectiles
-		for(int i=0;i<proyectil.length;i++){
-			if(proyectil[i]!=null){
-				proyectil[i].dibujarse(entorno);
-				proyectil[i].mover();
-				if(proyectil[i].limiteDeCiudad(entorno)){
-					proyectil[i] = null;
+		for(int i=0;i<proyectiles.length;i++){
+			if(proyectiles[i]!=null){
+				proyectiles[i].dibujarse(entorno);
+				proyectiles[i].mover();
+				if(proyectiles[i].limiteDeCiudad(entorno)){
+					proyectiles[i] = null;
 				}
 			}
 		}
 		
 		
 		//Kyojines
-		for(Kyojin k : kyo) {
+		for(Kyojin k : kyojines) {
 			if(k!=null){
 				k.dibujarse(entorno);
 				k.moverse();

@@ -3,15 +3,15 @@ import java.awt.*;
 import java.util.Random;
 
 import entorno.Entorno;
+import entorno.Herramientas;
 public class Kyojin {
 	//Variables de instancia
-	public double posX;
-	public double posY;
-	public double ancho;
-	public double alto;
-	
-	public double angulo;
-	Image img;
+	private double posX;
+	private double posY;
+	private double ancho;
+	private double alto;
+	private double angulo;
+	private Image img;
 	Random r =  new Random(20);
 	
 	//Metodo constructor
@@ -20,11 +20,13 @@ public class Kyojin {
 		this.posY = y;
 		this.ancho = ancho;
 		this.alto = alto;
+		img = Herramientas.cargarImagen("resources/kyojin3.jpg");
 	}
 	
 	public void dibujarse(Entorno entorno) {
 		//rectangulo(x,y,ancho, alto,angulo, color)
 		entorno.dibujarRectangulo(this.posX, this.posY, 20, 60, this.angulo, Color.GREEN);
+		entorno.dibujarImagen(img, posX, posY, angulo,0.3);
 	}
 	
 	public void moverse() {

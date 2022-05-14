@@ -18,13 +18,13 @@ public class Mikasa {
 		this.angulo = angulo;
 	
 		this.vida = 3;
+		img1 = Herramientas.cargarImagen("resources/mikassa.png");
 		
 	}
 	public void dibujarse(Entorno entorno) {
-		//triangulo(posX, posY, altura, base, angulo, color)
+
 		entorno.dibujarTriangulo(this.posX, this.posY, 50, 30, this.angulo, Color.blue);
-		//rectangulo(x,y, ancho, alto, angulo, color)
-		//entorno.dibujarRectangulo(this.posX, this.posY, 30, 50, this.angulo, Color.pink);
+		entorno.dibujarImagen(img1, posX, posY, angulo,0.3);
 	}
 	public void mover(Entorno entorno) 
 	{
@@ -38,6 +38,10 @@ public class Mikasa {
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA))
 			this.angulo = this.angulo + Herramientas.radianes(-1);
 		
+		if (entorno.estaPresionada(entorno.TECLA_ABAJO)){
+			this.posX -= Math.cos(this.angulo)*1.1;
+			this.posY -= Math.sin(this.angulo)*1.1;
+		}
 	}
 	
 	
@@ -48,9 +52,7 @@ public class Mikasa {
 		
 		if(e.sePresiono(e.TECLA_ESPACIO) && index!=-1){
 				proyectiles[index] =  new Proyectil(this.getPosX(), this.getPosY(),this.angulo, 30);
-
 		}
-
 
 	}
 
