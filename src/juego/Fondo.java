@@ -8,10 +8,10 @@ import entorno.Herramientas;
 
 public class Fondo {
 	private int[] posicion;
-	Image imagen = Herramientas.cargarImagen("resources/pasto.jpg");
+	private Image imagen = Herramientas.cargarImagen("resources/pasto.jpg");
 	//Methods
 	
 	public void dibujarse(Entorno entorno){
-		entorno.dibujarImagen(imagen, 0, 0, 0,2);
+		entorno.dibujarImagen(imagen, entorno.ancho()/2, entorno.alto()/2, 0,2);
 	}
 }

@@ -31,19 +31,43 @@ public class Juego extends InterfaceJuego
 		
 		// Inicializar lo que haga falta para el juego
 		//c = new colision();
-		fondo = new Fondo();
-		mikasa = new Mikasa(400,300);
-		vidas=100;		
-		proyectiles = new Proyectil[4];
-		kyojines = new Kyojin[4];
-		for(int i =0; i<kyojines.length;i++) {
-			kyojines[i] = new Kyojin(r.nextInt(entorno.ancho()),r.nextInt(entorno.alto())-20,20,60);
-		}
 		obstaculos = new Obstaculo[4];
 		obstaculos[0] = new Obstaculo(600,150); //árbol
 		obstaculos[1] = new Obstaculo(200,180); //casa
 		obstaculos[2] = new Obstaculo(500,320); //casa
 		obstaculos[3] = new Obstaculo(150,460); //árbol
+		
+		fondo = new Fondo();
+		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
+		vidas=100;		
+		proyectiles = new Proyectil[4];
+		kyojines = new Kyojin[4];
+		
+		for(int i =0; i<kyojines.length;i++) {
+			int x=0;
+			int y=0;
+			boolean posOk = false;
+			
+			while(posOk==false){
+				x = r.nextInt(entorno.ancho());
+				y = r.nextInt(entorno.alto());
+				for(int j=0;j<obstaculos.length;j++) {
+					if(obstaculos[j].coincidePos(x, y)==false && x!=mikasa.getPosX() && y!=mikasa.getPosY()){
+						posOk = true; 
+					}
+					else {
+						posOk = false;
+						break; // rompe todo el for o esa pasada del for?
+					}			
+				}
+				// está bien kyojines que puedan salir solapados?
+			}
+			kyojines[i] = new Kyojin(x,y,20,60);
+		}
+				
+		
+		
+
 		
 	
 		

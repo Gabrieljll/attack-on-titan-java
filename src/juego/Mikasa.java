@@ -6,15 +6,16 @@ import entorno.Herramientas;
 
 public class Mikasa {
 	//Variables de instancia
-	double posX;
-	double posY;
-	double angulo;
-	Image img1;
-	Image img2;
-	int vida;
+	private double x;
+	private double y;
+	private double angulo;
+	private Image img1;
+	private Image img2;
+	private int vida;
+	
 	Mikasa(int x, int y){
-		this.posX = x;
-		this.posY = y;
+		this.x = x;
+		this.y = y;
 		this.angulo = angulo;
 	
 		this.vida = 3;
@@ -23,14 +24,14 @@ public class Mikasa {
 	}
 	public void dibujarse(Entorno entorno) {
 
-		entorno.dibujarTriangulo(this.posX, this.posY, 50, 30, this.angulo, Color.blue);
-		entorno.dibujarImagen(img1, posX, posY, angulo,0.3);
+		entorno.dibujarTriangulo(this.x, this.y, 50, 30, this.angulo, Color.blue);
+		entorno.dibujarImagen(img1, x, y, angulo,0.3);
 	}
 	public void mover(Entorno entorno) 
 	{
 		if (entorno.estaPresionada(entorno.TECLA_ARRIBA)){
-			this.posX += Math.cos(this.angulo)*2;
-			this.posY += Math.sin(this.angulo)*2;
+			this.x += Math.cos(this.angulo)*2;
+			this.y += Math.sin(this.angulo)*2;
 		}
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA))
 			this.angulo = this.angulo + Herramientas.radianes(1);
@@ -39,8 +40,8 @@ public class Mikasa {
 			this.angulo = this.angulo + Herramientas.radianes(-1);
 		
 		if (entorno.estaPresionada(entorno.TECLA_ABAJO)){
-			this.posX -= Math.cos(this.angulo)*1.1;
-			this.posY -= Math.sin(this.angulo)*1.1;
+			this.x -= Math.cos(this.angulo)*1.1;
+			this.y -= Math.sin(this.angulo)*1.1;
 		}
 	}
 	
@@ -83,16 +84,16 @@ public class Mikasa {
 	
 	
 	public double getPosX() {
-		return this.posX;
+		return this.x;
 	}
 	public void setPosX(double posX) {
-		this.posX = posX;
+		this.x = posX;
 	}
 	public double getPosY() {
-		return this.posY;
+		return this.y;
 	}
 	public void setPosY(double posY) {
-		this.posY = posY;
+		this.y = posY;
 	}
 	
 	public int lugarProyectil(Proyectil[] proyectiles){

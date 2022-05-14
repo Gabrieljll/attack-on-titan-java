@@ -25,12 +25,12 @@ public class Proyectil {
 		this.angulo = angulo;
 		this.radio = radio;
 		this.velocidad = 5;
-		img = Herramientas.cargarImagen("resources/misil.png");
+		img = Herramientas.cargarImagen("resources/proyectil.png");
 		
 	}
 	public void dibujarse(Entorno entorno) {
-		entorno.dibujarCirculo(this.posX,this.posY, 30, Color.orange);
-		entorno.dibujarImagen(img, posX, posY, angulo,0.1);
+		entorno.dibujarCirculo(this.posX,this.posY, 10, Color.orange);
+		entorno.dibujarImagen(img, posX, posY, angulo,0.15);
 	}
 	public void mover(){
 		 this.posX = this.posX + Math.cos(this.angulo)*velocidad;

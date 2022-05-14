@@ -5,8 +5,8 @@ import entorno.Herramientas;
 
 public class Obstaculo {
   //variables de instancia
-  private double posicionX;
-  private double posicionY;
+  private double x;
+  private double y;
   private double ancho;
   private double alto;
   private double angulo;
@@ -15,8 +15,8 @@ public class Obstaculo {
   private Image arbol;
   
   public Obstaculo(int x, int y){
-    this.posicionX  = x;
-    this.posicionY = y;
+    this.x  = x;
+    this.y = y;
     this.alto = 30;
     this.alto= 20;
     this.casa = Herramientas.cargarImagen("resources/casa.png");
@@ -26,14 +26,20 @@ public class Obstaculo {
   }
   public void dibCasa(Entorno e) {
     //e.dibujarImagen(image, posicionX, posicionY, angulo, escala);
-    e.dibujarImagen(casa, posicionX, posicionY, angulo, 0.3);
+    e.dibujarImagen(casa, x, y, angulo, 0.3);
     
   }
   public void dibCasa2(Entorno e) {
-    e.dibujarImagen(casa2, posicionX, posicionY, angulo, 0.3);
+    e.dibujarImagen(casa2, x, y, angulo, 0.3);
   }
   public void dibArbol(Entorno e) {
-    e.dibujarImagen(arbol, posicionX, posicionY, angulo, 0.1);
+    e.dibujarImagen(arbol, x, y, angulo, 0.1);
   }
-
+  
+  public boolean coincidePos(double x, double y){
+	  if(x==this.x && y==this.y) {
+		  return true;
+	  }
+	  return false;
+  }
 }
