@@ -17,6 +17,7 @@ public class Juego extends InterfaceJuego
 	Proyectil[] proyectiles;
 	Kyojin[] kyojines;
 	Obstaculo[] obstaculos;
+	Suero suero;
 	colision c;
 	Random r = new Random();
 	Fondo fondo;
@@ -43,36 +44,13 @@ public class Juego extends InterfaceJuego
 		proyectiles = new Proyectil[4];
 		kyojines = new Kyojin[4];
 		
+		
 		for(int i =0; i<kyojines.length;i++) {
-			int x=0;
-			int y=0;
-			boolean posOk = false;
-			
-			while(posOk==false){
-				x = r.nextInt(entorno.ancho());
-				y = r.nextInt(entorno.alto());
-				for(int j=0;j<obstaculos.length;j++) {
-					if(obstaculos[j].coincidePos(x, y)==false && x!=mikasa.getPosX() && y!=mikasa.getPosY()){
-						posOk = true; 
-					}
-					else {
-						posOk = false;
-						break; // rompe todo el for o esa pasada del for?
-					}			
-				}
-				// está bien kyojines que puedan salir solapados?
-			}
-			kyojines[i] = new Kyojin(x,y,20,60);
+			double[] nuevaPos = this.generarPos();
+			kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],20,60);
 		}
-				
-		
-		
 
-		
-	
-		
 			
-		
 		// ...
 
 		// Inicia el juego!
@@ -95,6 +73,16 @@ public class Juego extends InterfaceJuego
 		obstaculos[1].dibCasa(entorno);
 		obstaculos[2].dibCasa2(entorno);
 		obstaculos[3].dibArbol(entorno);
+		
+		if(r.nextInt(100)<100&&suero==null){
+			double[] nuevaPos = this.generarPos();
+			suero = new Suero(nuevaPos[0],nuevaPos[1]);
+		}
+		
+		if(suero!=null) {
+			suero.dibujarse(entorno);
+		}
+		
 		
 		//Mikassa 
 		mikasa.mover(entorno);
@@ -139,7 +127,28 @@ public class Juego extends InterfaceJuego
 
 	}
 	
-
+	public double[] generarPos() {
+		double x=0;
+		double y=0;
+		boolean posOk = false;
+		//Evitamos solapamiento en el respawn
+		while(posOk==false){
+			x = r.nextInt(entorno.ancho());
+			y = r.nextInt(entorno.alto());
+			for(int j=0;j<obstaculos.length;j++) {
+				if(obstaculos[j].coincidePos(x, y)==false && x!=mikasa.getPosX() && y!=mikasa.getPosY()){
+					posOk = true; 
+				}
+				else {
+					posOk = false;
+					break; // ¿¿rompe todo el for o esa pasada del for??
+				}			
+			}
+			// ¿¿está bien kyojines que puedan salir solapados???
+		}
+		return new double[]{x,y};
+		
+	}
 	
 	
 	@SuppressWarnings("unused")

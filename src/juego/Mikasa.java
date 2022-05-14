@@ -60,17 +60,11 @@ public class Mikasa {
 	
 	//método para evitar que la minita huya de la ciudad
 	public void limiteDeCiudad(Entorno entorno) {
-		if (this.getPosX() >= entorno.ancho() -50 ) {
+		if (this.getPosX() >= entorno.ancho() || this.getPosY() >= entorno.alto()) {
 			this.angulo = this.angulo -90;
 		}
-		if(this.getPosX() <= 50) {
+		if(this.getPosX() <= 0 || this.getPosY() <= 0) {
 			this.angulo = this.angulo + 90;
-		}
-		if(this.getPosY() >= entorno.alto() -50) {
-			this.angulo = this.angulo -90;
-		}
-		if(this.getPosY() <= 10) {
-			this.angulo= this.angulo +90;
 		}
 		
 	}
