@@ -90,7 +90,7 @@ public class Mikasa {
 		
 	}
 	
-	public Obstaculo chocaObtaculos(Obstaculo[] obstaculos, double dist) {
+	public Obstaculo verificarColisionObstaculo(Obstaculo[] obstaculos, double dist) {
 		for(int i =0; i < obstaculos.length; i++) {
 			if(((this.getPosX() - obstaculos[i].getX()) * (this.getPosX() - obstaculos[i].getX()) + 
 			    (this.getPosY() - obstaculos[i].getY()) * (this.getPosY() - obstaculos[i].getY()) < dist*dist)) {
@@ -100,6 +100,28 @@ public class Mikasa {
 		return null;	
 	}
 	
+	public void esquivarObstaculo(Entorno entorno, Obstaculo obstaculoChocado) {
+		if(entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
+			if(obstaculoChocado.getX() < this.getPosX() && obstaculoChocado.getY() < this.getPosY()) {
+				this.setPosX(this.getPosX()+2);
+				this.setPosY(this.getPosY()+2);
+			}else {
+				this.setPosX(this.getPosX()-2);
+				this.setPosY(this.getPosY()-2);
+			}
+		}
+		if(entorno.estaPresionada(entorno.TECLA_ABAJO)) {
+			if(obstaculoChocado.getX() > this.getPosX() && obstaculoChocado.getY() > this.getPosY()) {
+				this.setPosX(this.getPosX()-2);
+				this.setPosY(this.getPosY()-2);
+			}else {
+				this.setPosX(this.getPosX()+2);
+				this.setPosY(this.getPosY()+2);
+			}
+		}
+			
+			
+	}
 	public boolean chocaSuero(Suero suero, double dist) {
 		if(((this.getPosX() - suero.getX()) * (this.getPosX() - suero.getX()) + 
 		    (this.getPosY() - suero.getY()) * (this.getPosY() - suero.getY()) < dist*dist)) {

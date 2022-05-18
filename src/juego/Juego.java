@@ -125,26 +125,11 @@ public class Juego extends InterfaceJuego
 //		}
 
 		
-		if(mikasa.chocaObtaculos(obstaculos, dist) != null && entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-			if(mikasa.chocaObtaculos(obstaculos, dist).getX() < mikasa.getPosX() && mikasa.chocaObtaculos(obstaculos, dist).getY() < mikasa.getPosY()) {
-				mikasa.setPosX(mikasa.getPosX()+2);
-				mikasa.setPosY(mikasa.getPosY()+2);
-			}else {
-				mikasa.setPosX(mikasa.getPosX()-2);
-				mikasa.setPosY(mikasa.getPosY()-2);
-			}
-						
-		} 
-		if(mikasa.chocaObtaculos(obstaculos, dist) != null && entorno.estaPresionada(entorno.TECLA_ABAJO)){
-			if(mikasa.chocaObtaculos(obstaculos, dist).getX() > mikasa.getPosX() && mikasa.chocaObtaculos(obstaculos, dist).getY() > mikasa.getPosY()) {
-				mikasa.setPosX(mikasa.getPosX()-2);
-				mikasa.setPosY(mikasa.getPosY()-2);
-			}else {
-				mikasa.setPosX(mikasa.getPosX()+2);
-				mikasa.setPosY(mikasa.getPosY()+2);
-			}
-		}
+		Obstaculo obstaculoChocado = mikasa.verificarColisionObstaculo(obstaculos, dist);
 		
+		if(obstaculoChocado != null) {
+			mikasa.esquivarObstaculo(entorno, obstaculoChocado);
+		}
 		
 		//Proyectiles
 		for(int i=0;i<proyectiles.length;i++){
