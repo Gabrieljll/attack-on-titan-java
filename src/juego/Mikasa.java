@@ -16,7 +16,7 @@ public class Mikasa {
 	double dist;
 	//private boolean chocaObstaculoDelante;
 	//private boolean chocaObstaculoAtras;
-	public boolean mikasaKyiojin;
+	public boolean mikasaKyojin;
 	
 	Mikasa(int x, int y){
 		this.x = x;
@@ -24,7 +24,7 @@ public class Mikasa {
 		this.angulo = angulo;
 //		this.chocaObstaculoDelante = false;
 //		this.chocaObstaculoAtras = false;
-		this.mikasaKyiojin = false;
+		this.mikasaKyojin = false;
 		this.dist = 40;
 		this.vida = 3;
 		img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
@@ -90,14 +90,25 @@ public class Mikasa {
 		
 	}
 	
-	public Obstaculo verificarColisionObstaculo(Obstaculo[] obstaculos, double dist) {
+	public Kyojin verificarColisionKyojines(Kyojin[] kyojines, double dist) {
+		for(int i =0; i < kyojines.length; i++) {
+			if(((this.getPosX() - kyojines[i].getPosX()) * (this.getPosX() - kyojines[i].getPosX()) + 
+			    (this.getPosY() - kyojines[i].getPosY()) * (this.getPosY() - kyojines[i].getPosY()) < dist*dist)) {
+				 return kyojines[i];
+			}
+		}
+		return null;	
+	}
+	
+	
+	public Obstaculo verificarColisionObstaculos(Obstaculo[] obstaculos, double dist) {
 		for(int i =0; i < obstaculos.length; i++) {
 			if(((this.getPosX() - obstaculos[i].getX()) * (this.getPosX() - obstaculos[i].getX()) + 
 			    (this.getPosY() - obstaculos[i].getY()) * (this.getPosY() - obstaculos[i].getY()) < dist*dist)) {
 				 return obstaculos[i];
 			}
 		}
-		return null;	
+		return null;
 	}
 	
 	public void esquivarObstaculo(Entorno entorno, Obstaculo obstaculoChocado) {
@@ -118,10 +129,9 @@ public class Mikasa {
 				this.setPosX(this.getPosX()+2);
 				this.setPosY(this.getPosY()+2);
 			}
-		}
-			
-			
+		}		
 	}
+	
 	public boolean chocaSuero(Suero suero, double dist) {
 		if(((this.getPosX() - suero.getX()) * (this.getPosX() - suero.getX()) + 
 		    (this.getPosY() - suero.getY()) * (this.getPosY() - suero.getY()) < dist*dist)) {
@@ -131,8 +141,7 @@ public class Mikasa {
 	}
 	
 	public void seVuelveTitan(){
-		//entorno.dibujarImagen(img3, getPosX(), getPosX(), angulo, 0.1);
-		this.mikasaKyiojin = true;	
+		this.mikasaKyojin = true;	
 	}
 	public boolean chocaKyojin(Kyojin[] kyojines, double dist) {
 		for(int i =0; i < kyojines.length; i++) {

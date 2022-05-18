@@ -47,16 +47,25 @@ public class Kyojin {
 		}
 		
 	}
-	public boolean chocaObtaculos(Obstaculo[] obstaculos, double dist) {
+	public Obstaculo verificarColisionObstaculos(Obstaculo[] obstaculos, double dist) {
 		for(int i =0; i < obstaculos.length; i++) {
 			if(((this.getPosX() - obstaculos[i].getX()) * (this.getPosX() - obstaculos[i].getX()) + 
 			    (this.getPosY() - obstaculos[i].getY()) * (this.getPosY() - obstaculos[i].getY()) < dist*dist)) {
-				 return true;
+				 return obstaculos[i];
 			}
 		}
-		return false;	
+		return null;	
 	}
-		
+	
+	public void esquivarObstaculo(Entorno entorno, Obstaculo obstaculoChocado) {
+			if(obstaculoChocado.getX() < this.getPosX() && obstaculoChocado.getY() < this.getPosY()) {
+				this.setPosX(this.getPosX()+2);
+				this.setPosY(this.getPosY()+2);
+			}else {
+				this.setPosX(this.getPosX()-2);
+				this.setPosY(this.getPosY()-2);
+			}		
+	}
 		
 		public double getPosX() {
 			return this.posX;

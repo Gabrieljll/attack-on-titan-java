@@ -102,7 +102,7 @@ public class Juego extends InterfaceJuego
 		
 		mikasa.mover(entorno);
 		
-		if( !mikasa.mikasaKyiojin){
+		if( !mikasa.mikasaKyojin){
 			mikasa.dibujarse(entorno, this.img1);	
 		}		
 		else{
@@ -125,9 +125,16 @@ public class Juego extends InterfaceJuego
 //		}
 
 		
-		Obstaculo obstaculoChocado = mikasa.verificarColisionObstaculo(obstaculos, dist);
-		
+		//Mikasa Colision obstaculos
+		Obstaculo obstaculoChocado = mikasa.verificarColisionObstaculos(obstaculos, dist);
 		if(obstaculoChocado != null) {
+			mikasa.esquivarObstaculo(entorno, obstaculoChocado);
+		}
+
+		//Mikasa Colision Kyojin
+		Kyojin kyojinChocado= mikasa.verificarColisionKyojines(kyojines, dist);
+		if(kyojinChocado != null && mikasa.mikasaKyojin) {
+			this.kyojines=this.eliminarKyojin(kyojinChocado);
 			mikasa.esquivarObstaculo(entorno, obstaculoChocado);
 		}
 		
@@ -144,22 +151,21 @@ public class Juego extends InterfaceJuego
 		
 		
 		//Kyojines
-		for(Kyojin k : kyojines) {
-			if(k!=null){
-				k.dibujarse(entorno);
-				k.moverse();
-				k.limiteDeCiudad(entorno);
-				if(k.chocaObtaculos(obstaculos, dist)) {
-					k.setPosX(k.getPosX()-5);
-					k.setPosY(k.getPosY()-5);
-					k.setAngulo(k.getAngulo()-5);
+		for(Kyojin kyojin : kyojines) {
+			if(kyojin!=null){
+				kyojin.dibujarse(entorno);
+				kyojin.moverse();
+				kyojin.limiteDeCiudad(entorno);
+				Obstaculo obstaculoChocadoKyo = kyojin.verificarColisionObstaculos(obstaculos, dist); 
+				if(obstaculoChocadoKyo != null) {
+					kyojin.esquivarObstaculo(entorno, obstaculoChocadoKyo);
 				}
-				if(!mikasa.mikasaKyiojin && mikasa.chocaKyojin(kyojines, dist3)) {
-					this.vidas --;
-				}
-				else if(mikasa.mikasaKyiojin == true && mikasa.chocaKyojin(kyojines, dist3)) {
-					k = null;
-				}
+//				if(!mikasa.mikasaKyiojin && mikasa.chocaKyojin(kyojines, dist3)) {
+//					this.vidas --;
+//				}
+//				else if(mikasa.mikasaKyiojin == true && mikasa.chocaKyojin(kyojines, dist3)) {
+//					kyojin = null;
+//				}
 			}
 		}
 		//mikasa.mataKyojin(proyectiles, kyojines);
@@ -191,8 +197,19 @@ public class Juego extends InterfaceJuego
 			}
 			// ¿¿está bien kyojines que puedan salir solapados???
 		}
-		return new double[]{x,y};
-		
+		return new double[]{x,y};	
+	}
+	
+	public Kyojin[] eliminarKyojin(Kyojin kyojinChocado) {
+		Kyojin [] kyojinesRestantes = new Kyojin[kyojines.length-1];
+		for( int i = 0; i< kyojines.length; i++) {
+			if ( kyojines[i].equals(kyojinChocado)) {
+				kyojines[i] = null;				
+			}else {
+				kyojinesRestantes[i]=kyojines[i];	
+			}
+		}
+		return kyojinesRestantes;
 	}
 	
 	
