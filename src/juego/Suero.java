@@ -22,5 +22,12 @@ public class Suero {
 		//entorno.dibujarImagen(img, x, y, 0,0.3);
 		
 	}
+
+	public double getX() {
+		return this.x;
+	}
+	public double getY() {
+		return this.y;
+	}
 	
 }

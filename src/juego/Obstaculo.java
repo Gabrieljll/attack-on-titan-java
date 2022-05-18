@@ -42,4 +42,10 @@ public class Obstaculo {
 	  }
 	  return false;
   }
+public double getX() {
+	return x;
+}
+public double getY() {
+	return y;
+}
 }
