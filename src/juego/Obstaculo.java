@@ -37,11 +37,13 @@ public class Obstaculo {
   }
   
   public boolean coincidePos(double x, double y){
-	  if(x==this.x && y==this.y) {
+	  if(x==this.x+this.ancho && y==this.y+this.alto
+		&& x==this.x && y==this.y) {
 		  return true;
 	  }
 	  return false;
   }
+  
 public double getX() {
 	return x;
 }

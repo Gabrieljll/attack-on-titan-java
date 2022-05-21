@@ -12,7 +12,7 @@ public class Mikasa {
 	private Image img1;
 	private Image img2;
 	private Image img3;
-	private int vida;
+	private int vidas;
 	double dist;
 	//private boolean chocaObstaculoDelante;
 	//private boolean chocaObstaculoAtras;
@@ -26,7 +26,7 @@ public class Mikasa {
 //		this.chocaObstaculoAtras = false;
 		this.mikasaKyojin = false;
 		this.dist = 40;
-		this.vida = 3;
+		this.vidas = 3;
 		img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
 		img2 = Herramientas.cargarImagen("resources/mikaIzq.png");
 		img3 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
@@ -153,7 +153,14 @@ public class Mikasa {
 		return false;	
 	}
 	
-	
+	  public boolean coincidePos(double x, double y){
+		  if(x==this.x+this.dist && y==this.y+this.dist
+			&& x==this.x && y==this.y) {
+			  return true;
+		  }
+		  return false;
+	  }
+	  
 //	public Kyojin[] eliminarKyojin(Kyojin [] kyojines, Kyojin kyojinChocado) {
 //		Kyojin [] kyojinesRestantes = new Kyojin[kyojines.length-1];
 //		for( int i = 0; i< kyojines.length; i++) {
@@ -192,6 +199,9 @@ public class Mikasa {
 			}
 		}
 		return -1;
+	}
+	public int getVidas() {
+		return this.vidas;
 	}
 
 }

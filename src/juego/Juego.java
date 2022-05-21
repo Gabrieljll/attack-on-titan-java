@@ -2,6 +2,7 @@ package juego;
 
 
 import java.awt.Image;
+import java.util.Calendar;
 import java.util.Random;
 
 import entorno.Entorno;
@@ -77,8 +78,6 @@ public class Juego extends InterfaceJuego
 	{
 		// Procesamiento de un instante de tiempo
 		
-		
-		
 		fondo.dibujarse(this.entorno);
 		
 		obstaculos[0].dibArbol(entorno);
@@ -95,6 +94,8 @@ public class Juego extends InterfaceJuego
 		if(suero!=null) {
 			suero.dibujarse(entorno);
 		}
+		
+		
 		
 		
 		
@@ -125,7 +126,7 @@ public class Juego extends InterfaceJuego
 			mikasa.esquivarObstaculo(entorno, obstaculoChocado);
 		}
 
-		//Mikasa Colision Kyojin
+
 
 		
 		//Proyectiles
@@ -134,7 +135,7 @@ public class Juego extends InterfaceJuego
 				proyectiles[i].dibujarse(entorno);
 				proyectiles[i].mover();
 				if(proyectiles[i].limiteDeCiudad(entorno)){
-					proyectiles[i] = null;
+					this.eliminarProyectil(proyectiles[i]);
 				}
 			}
 		}
@@ -150,28 +151,44 @@ public class Juego extends InterfaceJuego
 				if(obstaculoChocadoKyo != null) {
 					kyojin.esquivarObstaculo(entorno, obstaculoChocadoKyo);
 				}
+				
+				//Mikasa Colision Kyojin
 				boolean kyojinChocado = mikasa.verificarColisionKyojines(kyojin, dist);
-				if(kyojinChocado == true && mikasa.mikasaKyojin) {
+				if(kyojinChocado == true && mikasa.mikasaKyojin == true) {
 					this.eliminarKyojin(kyojin);
+					mikasa.mikasaKyojin=false;
+				}
+				if(kyojinChocado == true && mikasa.mikasaKyojin == false) {
+					mikasa.mikasaKyojin=false;
 				}
 				for(Proyectil proyectil : proyectiles) {
-					if(proyectil !=null && kyojin != null) {
+					if(proyectil !=null) {
 						boolean kyojinBaleado = proyectil.chocaKyojin(kyojin, dist);
 						if(kyojinBaleado) {
 							this.eliminarKyojin(kyojin);
+							this.eliminarProyectil(proyectil);
 						}	
 					}
 				}
 			}
 		}
 		
-		entorno.escribirTexto("Vidas: " + vidas, 700, 100);
+		entorno.escribirTexto("Vidas: " + mikasa.getVidas(), 700, 100);
 		
 		
 		// ...
 		
 
 	}
+	
+	public void eliminarProyectil(Proyectil proyectilLanzado) {
+		for( int i = 0; i< proyectiles.length; i++) {
+			if ( proyectiles[i]!=null && proyectiles[i].equals(proyectilLanzado)) {		
+				proyectiles[i]=null;	
+			}
+		}
+	}
+	
 	public void eliminarKyojin(Kyojin kyojinChocado) {
 		for( int i = 0; i< kyojines.length; i++) {
 			if ( kyojines[i]!=null && kyojines[i].equals(kyojinChocado)) {		
@@ -201,6 +218,7 @@ public class Juego extends InterfaceJuego
 		}
 		return new double[]{x,y};	
 	}
+	
 	
 
 	
