@@ -45,14 +45,12 @@ public class Proyectil {
 		}
 		return false;
 	}
-	public Kyojin chocaKyojin(Kyojin[] kyojines, double dist) {
-		for(int i =0; i < kyojines.length; i++) {
-			if(((this.getX() - kyojines[i].getPosX()) * (this.getX() - kyojines[i].getPosX()) + 
-			    (this.getY() - kyojines[i].getPosY()) * (this.getY() - kyojines[i].getPosY()) < dist*dist)) {
-				 return kyojines[i];
-			}
+	public boolean chocaKyojin(Kyojin kyojin, double dist) {
+		if(((this.getX() - kyojin.getPosX()) * (this.getX() - kyojin.getPosX()) + 
+		    (this.getY() - kyojin.getPosY()) * (this.getY() - kyojin.getPosY()) < dist*dist)) {
+			 return true;
 		}
-		return null;	
+		return false;	
 	}
 	public double getX() {
 		return this.x;

@@ -118,21 +118,6 @@ public class Juego extends InterfaceJuego
 		mikasa.limiteDeCiudad(entorno);
 		mikasa.disparar(entorno,this.proyectiles);
 		
-		for(Proyectil proyectil : proyectiles) {
-			if(proyectil !=null) {
-				Kyojin kyojinBaleado = proyectil.chocaKyojin(kyojines, dist);
-				if(kyojinBaleado != null) {
-					this.eliminarKyojin(kyojinBaleado);
-				}	
-			}
-			
-		}
-		
-//		if(mikasa.chocaObtaculos(obstaculos, dist)) {
-//			mikasa.setPosX(mikasa.getPosX()-2);
-//			mikasa.setPosY(mikasa.getPosY()-2);
-//		}
-
 		
 		//Mikasa Colision obstaculos
 		Obstaculo obstaculoChocado = mikasa.verificarColisionObstaculos(obstaculos, dist);
@@ -165,26 +150,20 @@ public class Juego extends InterfaceJuego
 				if(obstaculoChocadoKyo != null) {
 					kyojin.esquivarObstaculo(entorno, obstaculoChocadoKyo);
 				}
-//				if(!mikasa.mikasaKyiojin && mikasa.chocaKyojin(kyojines, dist3)) {
-//					this.vidas --;
-//				}
-//				if(mikasa.mikasaKyojin == true && mikasa.chocaKyojin(kyojines, dist3)) {
-//					kyojin = null;
-//				}
-				
 				boolean kyojinChocado = mikasa.verificarColisionKyojines(kyojin, dist);
-				//if(kyojinChocado != null && mikasa.mikasaKyojin) {
 				if(kyojinChocado == true && mikasa.mikasaKyojin) {
 					this.eliminarKyojin(kyojin);
-				
-					//mikasa.esquivarObstaculo(entorno, obstaculoChocado);
 				}
-				
-				
-				
+				for(Proyectil proyectil : proyectiles) {
+					if(proyectil !=null && kyojin != null) {
+						boolean kyojinBaleado = proyectil.chocaKyojin(kyojin, dist);
+						if(kyojinBaleado) {
+							this.eliminarKyojin(kyojin);
+						}	
+					}
+				}
 			}
 		}
-		//mikasa.mataKyojin(proyectiles, kyojines);
 		
 		entorno.escribirTexto("Vidas: " + vidas, 700, 100);
 		
