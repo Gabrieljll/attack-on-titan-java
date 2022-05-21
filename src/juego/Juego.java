@@ -118,6 +118,15 @@ public class Juego extends InterfaceJuego
 		mikasa.limiteDeCiudad(entorno);
 		mikasa.disparar(entorno,this.proyectiles);
 		
+		for(Proyectil proyectil : proyectiles) {
+			if(proyectil !=null) {
+				Kyojin kyojinBaleado = proyectil.chocaKyojin(kyojines, dist);
+				if(kyojinBaleado != null) {
+					this.eliminarKyojin(kyojinBaleado);
+				}	
+			}
+			
+		}
 		
 //		if(mikasa.chocaObtaculos(obstaculos, dist)) {
 //			mikasa.setPosX(mikasa.getPosX()-2);
@@ -132,11 +141,7 @@ public class Juego extends InterfaceJuego
 		}
 
 		//Mikasa Colision Kyojin
-		Kyojin kyojinChocado= mikasa.verificarColisionKyojines(kyojines, dist);
-		if(kyojinChocado != null && mikasa.mikasaKyojin) {
-			this.kyojines=this.eliminarKyojin(kyojinChocado);
-			mikasa.esquivarObstaculo(entorno, obstaculoChocado);
-		}
+
 		
 		//Proyectiles
 		for(int i=0;i<proyectiles.length;i++){
@@ -163,9 +168,20 @@ public class Juego extends InterfaceJuego
 //				if(!mikasa.mikasaKyiojin && mikasa.chocaKyojin(kyojines, dist3)) {
 //					this.vidas --;
 //				}
-//				else if(mikasa.mikasaKyiojin == true && mikasa.chocaKyojin(kyojines, dist3)) {
+//				if(mikasa.mikasaKyojin == true && mikasa.chocaKyojin(kyojines, dist3)) {
 //					kyojin = null;
 //				}
+				
+				boolean kyojinChocado = mikasa.verificarColisionKyojines(kyojin, dist);
+				//if(kyojinChocado != null && mikasa.mikasaKyojin) {
+				if(kyojinChocado == true && mikasa.mikasaKyojin) {
+					this.eliminarKyojin(kyojin);
+				
+					//mikasa.esquivarObstaculo(entorno, obstaculoChocado);
+				}
+				
+				
+				
 			}
 		}
 		//mikasa.mataKyojin(proyectiles, kyojines);
@@ -176,6 +192,13 @@ public class Juego extends InterfaceJuego
 		// ...
 		
 
+	}
+	public void eliminarKyojin(Kyojin kyojinChocado) {
+		for( int i = 0; i< kyojines.length; i++) {
+			if ( kyojines[i]!=null && kyojines[i].equals(kyojinChocado)) {		
+				kyojines[i]=null;	
+			}
+		}
 	}
 	
 	public double[] generarPos() {
@@ -200,17 +223,7 @@ public class Juego extends InterfaceJuego
 		return new double[]{x,y};	
 	}
 	
-	public Kyojin[] eliminarKyojin(Kyojin kyojinChocado) {
-		Kyojin [] kyojinesRestantes = new Kyojin[kyojines.length-1];
-		for( int i = 0; i< kyojines.length; i++) {
-			if ( kyojines[i].equals(kyojinChocado)) {
-				kyojines[i] = null;				
-			}else {
-				kyojinesRestantes[i]=kyojines[i];	
-			}
-		}
-		return kyojinesRestantes;
-	}
+
 	
 	
 	@SuppressWarnings("unused")

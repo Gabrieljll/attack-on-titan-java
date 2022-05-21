@@ -69,14 +69,14 @@ public class Mikasa {
 
 	}
 	
-	public void mataKyojin(Proyectil[] proyectiles, Kyojin[] kyojines) {
-		for(int i = 0; i <= proyectiles.length && i <= kyojines.length ; i++) {
-			if(proyectiles[i] != null && kyojines[i] != null && proyectiles[i].chocaKyojin(kyojines, dist)) {
-				kyojines[i] = null;
-				proyectiles[i] = null;
-			}
-		}
-	}
+//	public void mataKyojin(Proyectil[] proyectiles, Kyojin[] kyojines) {
+//		for(int i = 0; i <= proyectiles.length && i <= kyojines.length ; i++) {
+//			if(proyectiles[i] != null && kyojines[i] != null && proyectiles[i].chocaKyojin(kyojines, dist)) {
+//				kyojines[i] = null;
+//				proyectiles[i] = null;
+//			}
+//		}
+//	}
 
 	
 	//m�todo para evitar que la minita huya de la ciudad
@@ -90,14 +90,14 @@ public class Mikasa {
 		
 	}
 	
-	public Kyojin verificarColisionKyojines(Kyojin[] kyojines, double dist) {
-		for(int i =0; i < kyojines.length; i++) {
-			if(((this.getPosX() - kyojines[i].getPosX()) * (this.getPosX() - kyojines[i].getPosX()) + 
-			    (this.getPosY() - kyojines[i].getPosY()) * (this.getPosY() - kyojines[i].getPosY()) < dist*dist)) {
-				 return kyojines[i];
+	public boolean verificarColisionKyojines(Kyojin kyojin, double dist) {
+		
+			if(((this.getPosX() - kyojin.getPosX()) * (this.getPosX() - kyojin.getPosX()) + 
+			    (this.getPosY() - kyojin.getPosY()) * (this.getPosY() - kyojin.getPosY()) < dist*dist)) {
+				 return true;
+			
 			}
-		}
-		return null;	
+		return false;	
 	}
 	
 	
@@ -153,6 +153,17 @@ public class Mikasa {
 		return false;	
 	}
 	
+	
+//	public Kyojin[] eliminarKyojin(Kyojin [] kyojines, Kyojin kyojinChocado) {
+//		Kyojin [] kyojinesRestantes = new Kyojin[kyojines.length-1];
+//		for( int i = 0; i< kyojines.length; i++) {
+//			//if ( kyojines[i].getPosX() == kyojinChocado.getPosX() && kyojines[i].getPosY() == kyojinChocado.getPosY()) {
+//			if ( kyojines[i].equals(kyojinChocado)) {		
+//				kyojinesRestantes[i]=null;	
+//			}
+//		}
+//		return kyojinesRestantes;
+//	}
 	
 	
 //	public void setChocaObstaculoDelante(boolean chocaObstaculo) {
