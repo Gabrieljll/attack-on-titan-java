@@ -39,9 +39,44 @@ public class Mikasa {
 	}
 	public void mover(Entorno entorno) 
 	{
-		if (entorno.estaPresionada(entorno.TECLA_ARRIBA) ){
-			this.x += Math.cos(this.angulo)*2;
-			this.y += Math.sin(this.angulo)*2;
+		
+		//Generamos flags para mantenernos dentro de los límites de la ciudad
+		boolean limiteX=false;
+		boolean limiteY=false;
+		int limitPixel = 10;
+		
+		if(this.x >= entorno.ancho()-limitPixel || this.x <= limitPixel){
+			limiteX = true;
+		}
+		
+		if(this.y >= entorno.alto()-limitPixel || this.y <= limitPixel){ 
+			limiteY = true;
+		}
+		
+		
+		if (entorno.estaPresionada(entorno.TECLA_ARRIBA)){
+			
+			if(limiteY==false){
+				this.y += Math.sin(this.angulo)*2;
+							}
+			else { //Identificamos cuál es el límite en el que estamos y reasignamos la pos anterior para que el siguiente checkeo no estemos en el límite
+				if(y<=limitPixel)
+					this.y = limitPixel+1;
+				else
+					this.y = entorno.alto()-(limitPixel+1);
+			}
+			if(limiteX==false){
+				this.x += Math.cos(this.angulo)*2;
+			}else {
+
+				if(x<=limitPixel)
+					this.x = limitPixel+1;
+				else
+					this.x = entorno.ancho()-(limitPixel+1);
+			}
+			
+			
+			
 		}
 		
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)){			
@@ -53,9 +88,23 @@ public class Mikasa {
 			//this.chocaObstaculoDelante=false;
 		}
 		
+
+		
 		if (entorno.estaPresionada(entorno.TECLA_ABAJO)){
-			this.x -= Math.cos(this.angulo)*1.1;
-			this.y -= Math.sin(this.angulo)*1.1;	
+			if(limiteX==false){
+				this.x -= Math.cos(this.angulo)*1.1;
+			}else {
+				this.x += Math.cos(this.angulo)*1.1;
+			}
+			
+			if(limiteY==false){
+				this.y -= Math.sin(this.angulo)*1.1;
+			}else {
+				this.y += Math.sin(this.angulo)*1.1;
+			}
+			
+			
+				
 		}
 	}
 	

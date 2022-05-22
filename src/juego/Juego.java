@@ -125,7 +125,7 @@ public class Juego extends InterfaceJuego
 		}
 		
 		
-		mikasa.limiteDeCiudad(entorno);
+		//mikasa.limiteDeCiudad(entorno);
 		mikasa.disparar(entorno,this.proyectiles);
 		
 		
