@@ -24,9 +24,9 @@ public class Juego extends InterfaceJuego
 	Random r = new Random();
 	Fondo fondo;
 	int vidas;
-	double dist;
-	double dist2;
-	double dist3;
+	double distObstaculos;
+	double distSuero;
+	//double dist3; ?
 	Image img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
 	Image img2 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
 	// ...
@@ -44,9 +44,9 @@ public class Juego extends InterfaceJuego
 		obstaculos[2] = new Obstaculo(500,320); //casa
 		obstaculos[3] = new Obstaculo(150,460); //árbol
 		obstaculos[4] = new Obstaculo(700,500); //casa
-		dist = 80;
-		dist2 = 20;
-		dist3 = 40;
+		distObstaculos = 80;
+		distSuero = 20;
+		//dist3 = 40; ?
 		
 		fondo = new Fondo();
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
@@ -110,7 +110,7 @@ public class Juego extends InterfaceJuego
 			mikasa.dibujarse(entorno, this.img2);
 		}
 		
-		if(mikasa.chocaSuero(suero, dist2)){
+		if(mikasa.chocaSuero(suero, distSuero)){
 			suero = null;
 			mikasa.seVuelveTitan();			
 		}
@@ -121,7 +121,7 @@ public class Juego extends InterfaceJuego
 		
 		
 		//Mikasa Colision obstaculos
-		Obstaculo obstaculoChocado = mikasa.verificarColisionObstaculos(obstaculos, dist);
+		Obstaculo obstaculoChocado = mikasa.verificarColisionObstaculos(obstaculos, distObstaculos);
 		if(obstaculoChocado != null) {
 			mikasa.esquivarObstaculo(entorno, obstaculoChocado);
 		}
@@ -147,13 +147,13 @@ public class Juego extends InterfaceJuego
 				kyojin.dibujarse(entorno);
 				kyojin.moverse();
 				kyojin.limiteDeCiudad(entorno);
-				Obstaculo obstaculoChocadoKyo = kyojin.verificarColisionObstaculos(obstaculos, dist); 
+				Obstaculo obstaculoChocadoKyo = kyojin.verificarColisionObstaculos(obstaculos, distObstaculos); 
 				if(obstaculoChocadoKyo != null) {
 					kyojin.esquivarObstaculo(entorno, obstaculoChocadoKyo);
 				}
 				
 				//Mikasa Colision Kyojin
-				boolean kyojinChocado = mikasa.verificarColisionKyojines(kyojin, dist);
+				boolean kyojinChocado = mikasa.verificarColisionKyojines(kyojin, distObstaculos);
 				if(kyojinChocado == true && mikasa.mikasaKyojin == true) {
 					this.eliminarKyojin(kyojin);
 					mikasa.mikasaKyojin=false;
@@ -163,7 +163,7 @@ public class Juego extends InterfaceJuego
 				}
 				for(Proyectil proyectil : proyectiles) {
 					if(proyectil !=null) {
-						boolean kyojinBaleado = proyectil.chocaKyojin(kyojin, dist);
+						boolean kyojinBaleado = proyectil.chocaKyojin(kyojin, distObstaculos);
 						if(kyojinBaleado) {
 							this.eliminarKyojin(kyojin);
 							this.eliminarProyectil(proyectil);
@@ -206,8 +206,8 @@ public class Juego extends InterfaceJuego
 			x = r.nextInt(entorno.ancho());
 			y = r.nextInt(entorno.alto());
 			for(int j=0;j<obstaculos.length;j++) {
-				if(obstaculos[j].coincidePos(x, y)==false && x!=mikasa.getPosX() && y!=mikasa.getPosY()){
-					posOk = true; 
+				if(obstaculos[j].coincidePos(x, y, obstaculos[j].getDistObstaculos())==false && mikasa.coincidePos(x, y, mikasa.getDistancia())== false){
+					posOk = true;
 				}
 				else {
 					posOk = false;

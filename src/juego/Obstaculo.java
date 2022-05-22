@@ -13,6 +13,7 @@ public class Obstaculo {
   private Image casa;
   private Image casa2;
   private Image arbol;
+  private double distObstaculos;
   
   public Obstaculo(int x, int y){
     this.x  = x;
@@ -36,18 +37,22 @@ public class Obstaculo {
     e.dibujarImagen(arbol, x, y, angulo, 0.1);
   }
   
-  public boolean coincidePos(double x, double y){
-	  if(x==this.x+this.ancho && y==this.y+this.alto
-		&& x==this.x && y==this.y) {
+  public boolean coincidePos(double x, double y, double dist){
+	  if(((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < dist*dist)) {
 		  return true;
 	  }
 	  return false;
   }
   
-public double getX() {
+  public double getX() {
 	return x;
-}
-public double getY() {
+  }
+  public double getY() {
 	return y;
-}
+  }
+  
+  public double getDistObstaculos() {
+	  return this.distObstaculos;
+  }
+  
 }

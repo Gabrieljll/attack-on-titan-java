@@ -13,7 +13,7 @@ public class Mikasa {
 	private Image img2;
 	private Image img3;
 	private int vidas;
-	double dist;
+	double distancia;
 	//private boolean chocaObstaculoDelante;
 	//private boolean chocaObstaculoAtras;
 	public boolean mikasaKyojin;
@@ -25,7 +25,7 @@ public class Mikasa {
 //		this.chocaObstaculoDelante = false;
 //		this.chocaObstaculoAtras = false;
 		this.mikasaKyojin = false;
-		this.dist = 40;
+		this.distancia = 100;
 		this.vidas = 3;
 		img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
 		img2 = Herramientas.cargarImagen("resources/mikaIzq.png");
@@ -153,35 +153,20 @@ public class Mikasa {
 		return false;	
 	}
 	
-	  public boolean coincidePos(double x, double y){
-		  if(x==this.x+this.dist && y==this.y+this.dist
-			&& x==this.x && y==this.y) {
+	  public boolean coincidePos(double x, double y, double dist){
+		  if(((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < dist*dist)) {
 			  return true;
 		  }
 		  return false;
 	  }
 	  
-//	public Kyojin[] eliminarKyojin(Kyojin [] kyojines, Kyojin kyojinChocado) {
-//		Kyojin [] kyojinesRestantes = new Kyojin[kyojines.length-1];
-//		for( int i = 0; i< kyojines.length; i++) {
-//			//if ( kyojines[i].getPosX() == kyojinChocado.getPosX() && kyojines[i].getPosY() == kyojinChocado.getPosY()) {
-//			if ( kyojines[i].equals(kyojinChocado)) {		
-//				kyojinesRestantes[i]=null;	
-//			}
-//		}
-//		return kyojinesRestantes;
-//	}
-	
-	
-//	public void setChocaObstaculoDelante(boolean chocaObstaculo) {
-//		this.chocaObstaculoDelante = chocaObstaculo;
-//	}
-//	public void setChocaObstaculoAtras(boolean chocaObstaculo) {
-//		this.chocaObstaculoAtras = chocaObstaculo;
-//	}
-	public double getPosX() {
-		return this.x;
-	}
+	  public double getDistancia() {
+		  return this.distancia;
+	  }
+	  public double getPosX() {
+		  return this.x;
+	  }
+	  
 	public void setPosX(double posX) {
 		this.x = posX;
 	}
