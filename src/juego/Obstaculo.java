@@ -13,7 +13,6 @@ public class Obstaculo {
   private Image casa;
   private Image casa2;
   private Image arbol;
-  private double distObstaculos;
   
   public Obstaculo(int x, int y){
     this.x  = x;
@@ -49,10 +48,6 @@ public class Obstaculo {
   }
   public double getY() {
 	return y;
-  }
-  
-  public double getDistObstaculos() {
-	  return this.distObstaculos;
   }
   
 }

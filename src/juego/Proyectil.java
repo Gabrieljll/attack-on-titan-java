@@ -45,9 +45,9 @@ public class Proyectil {
 		}
 		return false;
 	}
-	public boolean chocaKyojin(Kyojin kyojin, double dist) {
-		if(((this.getX() - kyojin.getPosX()) * (this.getX() - kyojin.getPosX()) + 
-		    (this.getY() - kyojin.getPosY()) * (this.getY() - kyojin.getPosY()) < dist*dist)) {
+	public boolean colisionKyojin(Kyojin kyojin, double dist) {
+		if(((this.getX() - kyojin.getX()) * (this.getX() - kyojin.getX()) + 
+		    (this.getY() - kyojin.getY()) * (this.getY() - kyojin.getY()) < dist*dist)) {
 			 return true;
 		}
 		return false;	

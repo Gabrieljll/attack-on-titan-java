@@ -13,10 +13,10 @@ public class Mikasa {
 	private Image img2;
 	private Image img3;
 	private int vidas;
-	double distancia;
+	double dist;
 	//private boolean chocaObstaculoDelante;
 	//private boolean chocaObstaculoAtras;
-	public boolean mikasaKyojin;
+	public boolean mikasaTitan; // Para saber si se convierte en kyojin o no
 	
 	Mikasa(int x, int y){
 		this.x = x;
@@ -24,8 +24,8 @@ public class Mikasa {
 		this.angulo = angulo;
 //		this.chocaObstaculoDelante = false;
 //		this.chocaObstaculoAtras = false;
-		this.mikasaKyojin = false;
-		this.distancia = 100;
+		this.mikasaTitan = false;
+		this.dist = 100;
 		this.vidas = 3;
 		img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
 		img2 = Herramientas.cargarImagen("resources/mikaIzq.png");
@@ -64,36 +64,26 @@ public class Mikasa {
 		int index = lugarProyectil(proyectiles);
 		
 		if(e.sePresiono(e.TECLA_ESPACIO) && index!=-1){
-				proyectiles[index] =  new Proyectil(this.getPosX(), this.getPosY(),this.angulo, 30);
+				proyectiles[index] =  new Proyectil(this.getX(), this.getY(),this.angulo, 30);
 		}
 
 	}
-	
-//	public void mataKyojin(Proyectil[] proyectiles, Kyojin[] kyojines) {
-//		for(int i = 0; i <= proyectiles.length && i <= kyojines.length ; i++) {
-//			if(proyectiles[i] != null && kyojines[i] != null && proyectiles[i].chocaKyojin(kyojines, dist)) {
-//				kyojines[i] = null;
-//				proyectiles[i] = null;
-//			}
-//		}
-//	}
-
-	
-	//mï¿½todo para evitar que la minita huya de la ciudad
+		
+	//Respetar límites de la ciudad
 	public void limiteDeCiudad(Entorno entorno) {
-		if (this.getPosX() >= entorno.ancho() || this.getPosY() >= entorno.alto()) {
+		if (this.getX() >= entorno.ancho() || this.getY() >= entorno.alto()) {
 			this.angulo = this.angulo - 90;
 		}
-		if (this.getPosX() <= 0 || this.getPosY() <= 0) {
+		if (this.getX() <= 0 || this.getY() <= 0) {
 			this.angulo = this.angulo + 90;
 		}
 		
 	}
-	
-	public boolean verificarColisionKyojines(Kyojin kyojin, double dist) {
+
+	public boolean colisionKyogin(Kyojin kyojin, double dist) {
 		
-			if(((this.getPosX() - kyojin.getPosX()) * (this.getPosX() - kyojin.getPosX()) + 
-			    (this.getPosY() - kyojin.getPosY()) * (this.getPosY() - kyojin.getPosY()) < dist*dist)) {
+			if(((this.getX() - kyojin.getX()) * (this.getX() - kyojin.getX()) + 
+			    (this.getY() - kyojin.getY()) * (this.getY() - kyojin.getY()) < dist*dist)) {
 				 return true;
 			
 			}
@@ -101,10 +91,10 @@ public class Mikasa {
 	}
 	
 	
-	public Obstaculo verificarColisionObstaculos(Obstaculo[] obstaculos, double dist) {
+	public Obstaculo colisionObstaculo(Obstaculo[] obstaculos, double dist) {
 		for(int i =0; i < obstaculos.length; i++) {
-			if(((this.getPosX() - obstaculos[i].getX()) * (this.getPosX() - obstaculos[i].getX()) + 
-			    (this.getPosY() - obstaculos[i].getY()) * (this.getPosY() - obstaculos[i].getY()) < dist*dist)) {
+			if(((this.getX() - obstaculos[i].getX()) * (this.getX() - obstaculos[i].getX()) + 
+			    (this.getY() - obstaculos[i].getY()) * (this.getY() - obstaculos[i].getY()) < dist*dist)) {
 				 return obstaculos[i];
 			}
 		}
@@ -113,40 +103,43 @@ public class Mikasa {
 	
 	public void esquivarObstaculo(Entorno entorno, Obstaculo obstaculoChocado) {
 		if(entorno.estaPresionada(entorno.TECLA_ARRIBA)) {
-			if(obstaculoChocado.getX() < this.getPosX() && obstaculoChocado.getY() < this.getPosY()) {
-				this.setPosX(this.getPosX()+2);
-				this.setPosY(this.getPosY()+2);
+			if(obstaculoChocado.getX() < this.getX() && obstaculoChocado.getY() < this.getY()) {
+				this.setX(this.getX()+2);
+				this.setY(this.getY()+2);
 			}else {
-				this.setPosX(this.getPosX()-2);
-				this.setPosY(this.getPosY()-2);
+				this.setX(this.getX()-2);
+				this.setY(this.getY()-2);
 			}
 		}
 		if(entorno.estaPresionada(entorno.TECLA_ABAJO)) {
-			if(obstaculoChocado.getX() > this.getPosX() && obstaculoChocado.getY() > this.getPosY()) {
-				this.setPosX(this.getPosX()-2);
-				this.setPosY(this.getPosY()-2);
+			if(obstaculoChocado.getX() > this.getX() && obstaculoChocado.getY() > this.getY()) {
+				this.setX(this.getX()-2);
+				this.setY(this.getY()-2);
 			}else {
-				this.setPosX(this.getPosX()+2);
-				this.setPosY(this.getPosY()+2);
+				this.setX(this.getX()+2);
+				this.setY(this.getY()+2);
 			}
 		}		
 	}
 	
 	public boolean chocaSuero(Suero suero, double dist) {
-		if(((this.getPosX() - suero.getX()) * (this.getPosX() - suero.getX()) + 
-		    (this.getPosY() - suero.getY()) * (this.getPosY() - suero.getY()) < dist*dist)) {
+		if(((this.getX() - suero.getX()) * (this.getX() - suero.getX()) + 
+		    (this.getY() - suero.getY()) * (this.getY() - suero.getY()) < dist*dist)) {
 			return true;
 		}
 	return false;
 	}
 	
 	public void seVuelveTitan(){
-		this.mikasaKyojin = true;	
+		this.mikasaTitan = true;	
 	}
-	public boolean chocaKyojin(Kyojin[] kyojines, double dist) {
+	public void seVuelveNormal() {
+		this.mikasaTitan = false;
+	}
+	public boolean colisionKyojin(Kyojin[] kyojines, double dist) {
 		for(int i =0; i < kyojines.length; i++) {
-			if(((this.getPosX() - kyojines[i].getPosX()) * (this.getPosX() - kyojines[i].getPosX()) + 
-	            (this.getPosY() - kyojines[i].getPosY()) * (this.getPosY() - kyojines[i].getPosY()) < dist*dist  )) {
+			if(((this.getX() - kyojines[i].getX()) * (this.getX() - kyojines[i].getX()) + 
+	            (this.getY() - kyojines[i].getY()) * (this.getY() - kyojines[i].getY()) < dist*dist  )) {
 				return true;
 			}
 		}
@@ -160,22 +153,28 @@ public class Mikasa {
 		  return false;
 	  }
 	  
-	  public double getDistancia() {
-		  return this.distancia;
+	  public boolean getMikasaTitan(){
+		  return this.mikasaTitan;
 	  }
-	  public double getPosX() {
+	  
+	  public double getDistancia() {
+		  return this.dist;
+	  }
+	  public double getX() {
 		  return this.x;
 	  }
 	  
-	public void setPosX(double posX) {
+	public void setX(double posX) {
 		this.x = posX;
 	}
-	public double getPosY() {
+	public double getY() {
 		return this.y;
 	}
-	public void setPosY(double posY) {
+	public void setY(double posY) {
 		this.y = posY;
 	}
+	
+	
 	
 	public int lugarProyectil(Proyectil[] proyectiles){
 		for (int i=0; i<proyectiles.length;i++){
