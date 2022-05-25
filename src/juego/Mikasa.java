@@ -14,8 +14,6 @@ public class Mikasa {
 	private Image img3;
 	private int vidas;
 	double dist;
-	//private boolean chocaObstaculoDelante;
-	//private boolean chocaObstaculoAtras;
 	public boolean mikasaTitan; // Para saber si se convierte en kyojin o no
 	
 	Mikasa(int x, int y){
@@ -40,7 +38,7 @@ public class Mikasa {
 	public void mover(Entorno entorno) 
 	{
 		
-		//Generamos flags para mantenernos dentro de los límites de la ciudad
+		//Generamos flags para mantenernos dentro de los lï¿½mites de la ciudad
 		boolean limiteX=false;
 		boolean limiteY=false;
 		int limitPixel = 10;
@@ -59,7 +57,7 @@ public class Mikasa {
 			if(limiteY==false){
 				this.y += Math.sin(this.angulo)*2;
 							}
-			else { //Identificamos cuál es el límite en el que estamos y reasignamos la pos anterior para que el siguiente checkeo no estemos en el límite
+			else { //Identificamos cuï¿½l es el lï¿½mite en el que estamos y reasignamos la pos anterior para que el siguiente checkeo no estemos en el lï¿½mite
 				if(y<=limitPixel)
 					this.y = limitPixel+1;
 				else
@@ -118,7 +116,7 @@ public class Mikasa {
 
 	}
 		
-	//Respetar límites de la ciudad
+	//Respetar lï¿½mites de la ciudad
 	public void limiteDeCiudad(Entorno entorno) {
 		if (this.getX() >= entorno.ancho() || this.getY() >= entorno.alto()) {
 			this.angulo = this.angulo - 90;
@@ -235,6 +233,9 @@ public class Mikasa {
 	}
 	public int getVidas() {
 		return this.vidas;
+	}
+	public void setVidas(int vidas) {	
+		this.vidas = vidas;
 	}
 
 }

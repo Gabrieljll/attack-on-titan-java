@@ -7,11 +7,10 @@ import entorno.Entorno;
 import entorno.Herramientas;
 
 public class Fondo {
-	private int[] posicion;
-	private Image imagen = Herramientas.cargarImagen("resources/pasto.jpg");
+	private int[] posicion;	
 	//Methods
 	
-	public void dibujarse(Entorno entorno){
-		entorno.dibujarImagen(imagen, entorno.ancho()/2, entorno.alto()/2, 0,2);
+	public void dibujarse(Entorno entorno, Image imagenFondo, double escala){
+		entorno.dibujarImagen(imagenFondo, entorno.ancho()/2, entorno.alto()/2, 0, escala);
 	}
 }

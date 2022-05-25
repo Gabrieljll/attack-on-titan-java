@@ -57,9 +57,12 @@ public class Kyojin {
 		return null;	
 	}
 	
+
 	public void radar(Mikasa mikasa, double dist){
 	    if((this.getX() - mikasa.getX()) < dist && (this.getY() - mikasa.getY()) < dist){
 	    	this.angulo = Math.atan2( mikasa.getY() - this.getY() , mikasa.getX() - this.getX() );
+	    }else {
+	    	this.moverse();
 	    }
 	}
 	
@@ -72,6 +75,7 @@ public class Kyojin {
 				this.setY(this.getY()-2);
 			}		
 	}
+	
 		
 		public double getX() {
 			return this.x;
@@ -91,5 +95,6 @@ public class Kyojin {
 		public void setAngulo(double angulo) {
 			this.angulo = angulo;
 		}
+
 
 }
