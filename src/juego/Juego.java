@@ -225,7 +225,7 @@ public class Juego extends InterfaceJuego
 								this.eliminarKyojin(kyojines[i]);
 								this.eliminarProyectil(proyectil);
 								kyojinesEliminados++;
-								if(kyojinesEliminados == 1) {
+								if(kyojinesEliminados == 4) {
 									this.jefeFinal = true;
 								}
 								break; // Ya muerto, no recorremos más proyectiles
