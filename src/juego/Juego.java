@@ -67,10 +67,7 @@ public class Juego extends InterfaceJuego
 		kyojines = new Kyojin[4];
 		
 		
-		for(int i =0; i<kyojines.length;i++) {
-			double[] nuevaPos = this.generarPos();
-			kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],20,60);
-		}
+		resetearKyojines();
 
 			
 		// ...
@@ -176,7 +173,7 @@ public class Juego extends InterfaceJuego
 						kyojinesEliminados++;
 					}
 					else if (kyojinChocado == true && mikasa.mikasaTitan == false){
-						if(mikasa.getVidas()-1 >= 0){
+						if(mikasa.getVidas()-1 > 0){
 							this.vidasContador++;
 							this.resetearSpawns();
 						}
@@ -252,9 +249,19 @@ public class Juego extends InterfaceJuego
 	}
 	
 	public void resetearKyojines() {
+		//Desecho si había
 		for( int i = 0; i< kyojines.length; i++) {
-			eliminarKyojin(kyojines[i]);	
+			if(kyojines[i]!=null){
+				eliminarKyojin(kyojines[i]);
+			}	
 		}
+		//Creo cuatro nuevos
+		for( int i = 0; i< kyojines.length; i++) {
+			double[] nuevaPos = this.generarPos();
+			kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],20,60);
+		}
+		
+		
 	}
 	public void eliminarKyojin(Kyojin kyojin) {
 		for( int i = 0; i< kyojines.length; i++) {
