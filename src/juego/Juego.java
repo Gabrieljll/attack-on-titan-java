@@ -55,7 +55,7 @@ public class Juego extends InterfaceJuego
 		// Distancias
 		distObstaculos = 80;
 		distSuero = 20;
-		distRadar = 200;
+		distRadar = 100;
 		
 		// Iteradores
 		itSuero = 0;
@@ -149,7 +149,21 @@ public class Juego extends InterfaceJuego
 				mikasa.seVuelveNormal();
 				itSuero = 0;
 			}
-				
+			
+			////Colisiones kyojines
+			for(int i=0;i<kyojines.length-1;i++) {
+				for(int j=i+1;j<kyojines.length;j++) {
+					if(kyojines[i]!=null&&kyojines[j]!=null) {
+						if(kyojines[i].colisionKyojin(kyojines[j], 70)) {
+							kyojines[i].setAngulo(Herramientas.radianes(r.nextInt(90)));
+							kyojines[i].moverse();
+							kyojines[j].setAngulo(Herramientas.radianes(150));
+							kyojines[j].moverse();
+						}
+					}
+				}
+			}
+			////
 			
 			//Kyojines
 			//for(Kyojin kyojin : kyojines) {

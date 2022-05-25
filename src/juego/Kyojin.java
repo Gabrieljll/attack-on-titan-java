@@ -23,7 +23,7 @@ public class Kyojin {
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		this.velocidad = 0.4;
+		this.velocidad = 0.8;
 		img2 = Herramientas.cargarImagen("resources/kyojinIzq.png");
 	}
 	
@@ -57,7 +57,14 @@ public class Kyojin {
 		return null;	
 	}
 	
-
+	public boolean colisionKyojin(Kyojin kyojin, int dist) {
+		if(((this.getX() - kyojin.getX()) * (this.getX() - kyojin.getX()) + 
+			    (this.getY() - kyojin.getY()) * (this.getY() - kyojin.getY()) < dist*dist)) {
+				 return true;
+			}
+		return false;
+	} 
+	
 	public void radar(Mikasa mikasa, double dist){
 	    if((this.getX() - mikasa.getX()) < dist && (this.getY() - mikasa.getY()) < dist){
 	    	this.angulo = Math.atan2( mikasa.getY() - this.getY() , mikasa.getX() - this.getX() );
