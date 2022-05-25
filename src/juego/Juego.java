@@ -19,6 +19,7 @@ public class Juego extends InterfaceJuego
 	private Mikasa mikasa;
 	private Proyectil[] proyectiles;
 	private Kyojin[] kyojines;
+	private Kyojin kyojinJefe;
 	private Obstaculo[] obstaculos;
 	private Suero suero;
 	private Random r = new Random();
@@ -36,14 +37,17 @@ public class Juego extends InterfaceJuego
 	private Image img2 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
 	private Image imagenFondo = Herramientas.cargarImagen("resources/pasto.jpg");
 	private Image imagenFondoGameOver = Herramientas.cargarImagen("resources/fondo-gameover.jpg");
+	private Image imagenFondoWin = Herramientas.cargarImagen("resources/win.jpg");
 	private Image imagenKyojinNormal = Herramientas.cargarImagen("resources/kyojinIzq.png");
 	private Image imagenKyojinJefe = Herramientas.cargarImagen("resources/kyojin3.jpg");
+	private boolean mikasaGana;
 	// ...
 	
 	Juego()
 	{
 		this.juegoFinalizado = false;
 		this.jefeFinal = false;
+		this.mikasaGana = false;
 		// Inicializa el objeto entorno
 		this.entorno = new Entorno(this, "Attack on Titan, Final Season - Grupo 5 - v1", 800, 600);
 		
@@ -69,6 +73,7 @@ public class Juego extends InterfaceJuego
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);		
 		proyectiles = new Proyectil[4];
 		kyojines = new Kyojin[4];
+		kyojinJefe = new Kyojin(200,400,30,70);
 		
 		
 		resetearKyojines();
@@ -97,7 +102,7 @@ public class Juego extends InterfaceJuego
 			this.juegoJefeFinal();
 		}
 		else if (this.juegoFinalizado == true && this.jefeFinal == false){
-			this.finDelJuego();
+			this.finDelJuego(mikasaGana);
 		}
 	}
 	
@@ -257,22 +262,25 @@ public class Juego extends InterfaceJuego
 		mikasa.dibujarse(entorno, this.img1);		
 		mikasa.disparar(entorno,this.proyectiles);
 		//Kyojin
-		Kyojin kyojinJefe = new Kyojin(50,400,40,80);
-		kyojinJefe.dibujarse(entorno, imagenKyojinJefe, 0.4);
-		kyojinJefe.moverse();
-		kyojinJefe.limiteDeCiudad(entorno);
-		kyojinJefe.radar(mikasa, distRadar);
-		
-		
-		
-		for(Proyectil proyectil : proyectiles) {
-			if(proyectil !=null) {
-				boolean kyojinBaleado = proyectil.colisionKyojin(kyojinJefe, distObstaculos);
-				if(kyojinBaleado) {
-					this.eliminarKyojin(kyojinJefe);
-					this.eliminarProyectil(proyectil);
-					break; // Ya muerto, no recorremos más proyectiles
-				}	
+
+		if(kyojinJefe != null) {
+			kyojinJefe.dibujarse(entorno, imagenKyojinJefe, 0.2);
+			kyojinJefe.moverse();
+			kyojinJefe.limiteDeCiudad(entorno);
+			kyojinJefe.radar(mikasa, distRadar);	
+			
+			for(Proyectil proyectil : proyectiles) {
+				if(proyectil !=null) {
+					boolean kyojinBaleado = proyectil.colisionKyojin(kyojinJefe, 40);
+					if(kyojinBaleado) {
+						this.eliminarKyojin(kyojinJefe);
+						this.eliminarProyectil(proyectil);
+						this.jefeFinal=false;
+						this.juegoFinalizado=true;
+						this.mikasaGana=true;
+						break; // Ya muerto, no recorremos más proyectiles
+					}
+				}
 			}
 		}
 		
@@ -288,17 +296,33 @@ public class Juego extends InterfaceJuego
 		}
 	}
 	
-	public void finDelJuego() {
-		this.resetearKyojines();
-		fondo.dibujarse(this.entorno, imagenFondoGameOver, 1);
-		entorno.cambiarFont("Arial", 25, Color.green);
-		entorno.escribirTexto("Presiona Barra Espacio para reintentar", 185, 430);
-		if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
-			mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
-			this.kyojinesEliminados=0;
-			this.vidasContador=0;
-			this.juegoFinalizado=false;				
+	public void finDelJuego(boolean mikasaGana) {
+		if ( mikasaGana == false ) {
+			this.resetearKyojines();
+			fondo.dibujarse(this.entorno, imagenFondoGameOver, 1);
+			entorno.cambiarFont("Arial", 25, Color.green);
+			entorno.escribirTexto("Presiona Barra Espacio para reintentar", 185, 430);
+			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+				mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
+				this.kyojinesEliminados=0;
+				this.vidasContador=0;
+				this.juegoFinalizado=false;			
+			}	
 		}
+		else {
+			fondo.dibujarse(this.entorno, imagenFondoWin, 2.5);
+			entorno.cambiarFont("Arial", 25, Color.white);
+			entorno.escribirTexto("Presiona Barra Espacio para jugar de nuevo", 160, 400);
+			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
+				mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
+				this.kyojinesEliminados=0;
+				this.vidasContador=0;
+				this.juegoFinalizado=false;
+				this.mikasaGana=false;
+				kyojinJefe = new Kyojin(700,300,30,70);
+			}	
+		}
+		
 	}
 	
 
@@ -335,10 +359,15 @@ public class Juego extends InterfaceJuego
 		
 	}
 	public void eliminarKyojin(Kyojin kyojin) {
-		for( int i = 0; i< kyojines.length; i++) {
-			if ( kyojines[i]!=null && kyojines[i].equals(kyojin)) {		
-				kyojines[i]=null;	
+		if (!kyojin.equals(kyojinJefe)) {
+			for( int i = 0; i< kyojines.length; i++) {
+				if ( kyojines[i]!=null && kyojines[i].equals(kyojin)) {		
+					kyojines[i]=null;	
+				}
 			}
+		}
+		else {
+			this.kyojinJefe = null;
 		}
 	}
 	

@@ -11,8 +11,6 @@ public class Kyojin {
 	private double ancho;
 	private double alto;
 	private double angulo;
-	private Image imgKyojinJefe;
-	private Image img2;
 	private Random r =  new Random(20);
 	private double velocidad;
 
@@ -24,7 +22,6 @@ public class Kyojin {
 		this.ancho = ancho;
 		this.alto = alto;
 		this.velocidad = 0.8;
-		img2 = Herramientas.cargarImagen("resources/kyojinIzq.png");
 	}
 	
 	public void dibujarse(Entorno entorno, Image imagenKyojin, double escala) {
