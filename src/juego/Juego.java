@@ -309,7 +309,12 @@ public class Juego extends InterfaceJuego
 							this.juegoFinalizado=true;
 							this.mikasaGana=true;
 							
+						}else {
+							double[] posJefe = this.generarPosJefe();
+							kyojinJefe.setX(posJefe[0]);
+							kyojinJefe.setY(posJefe[1]);
 						}
+						
 						break; // Ya muerto, no recorremos más proyectiles
 					}
 				}
