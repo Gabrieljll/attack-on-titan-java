@@ -274,6 +274,20 @@ public class Juego extends InterfaceJuego
 			kyojinJefe.limiteDeCiudad(entorno);
 			kyojinJefe.radar(mikasa, distRadar);	
 			
+			boolean kyojinChocado = mikasa.colisionKyogin(kyojinJefe, 40);
+			if(kyojinChocado == true ) {
+				vidasMikasa--;
+				if(this.vidasMikasa > 0){
+					mikasa.setX(this.entorno.ancho()-kyojinJefe.getX());;
+					mikasa.setY(this.entorno.alto()-kyojinJefe.getY());;
+				}
+				else {
+					this.jefeFinal=false;
+					this.juegoFinalizado=true;
+					this.mikasaGana=false;
+				}
+			}
+			
 			for(Proyectil proyectil : proyectiles) {
 				if(proyectil !=null) {
 					boolean kyojinBaleado = proyectil.colisionKyojin(kyojinJefe, 40);
