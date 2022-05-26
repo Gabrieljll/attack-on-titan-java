@@ -230,15 +230,16 @@ public class Juego extends InterfaceJuego
 								this.eliminarKyojin(kyojines[i]);
 								this.eliminarProyectil(proyectil);
 								kyojinesEliminados++;
-								if(kyojinesEliminados == 4) {
-									this.jefeFinal = true;
-								}
+
 								break; // Ya muerto, no recorremos más proyectiles
 							}	
 						}
 					}
 				}
 					
+				if(kyojinesEliminados >= 4) {
+					this.jefeFinal = true;
+				}
 				if(kyojinChocado == true && mikasa.mikasaTitan == false) {
 					mikasa.mikasaTitan=false;					
 				}
@@ -262,11 +263,15 @@ public class Juego extends InterfaceJuego
 	}
 
 	public void juegoJefeFinal(){
+		
+		//Mikasa
 		fondo.dibujarse(this.entorno, imagenFondo, 2);
 		mikasa.mover(entorno);
 		mikasa.dibujarse(entorno, this.img1);		
 		mikasa.disparar(entorno,this.proyectiles);
-		//Kyojin
+		
+		
+		//KyojinJefe
 
 		if(kyojinJefe != null) {
 			kyojinJefe.dibujarse(entorno, imagenKyojinJefe, 0.2);
@@ -280,6 +285,10 @@ public class Juego extends InterfaceJuego
 				if(this.vidasMikasa > 0){
 					mikasa.setX(this.entorno.ancho()-kyojinJefe.getX());;
 					mikasa.setY(this.entorno.alto()-kyojinJefe.getY());;
+					
+					double[] posJefe = this.generarPosJefe();
+					kyojinJefe.setX(posJefe[0]);
+					kyojinJefe.setY(posJefe[1]);
 				}
 				else {
 					this.jefeFinal=false;
@@ -337,7 +346,7 @@ public class Juego extends InterfaceJuego
 				this.juegoFinalizado=false;			
 			}	
 		}
-		else { //Mikasa perdió
+		else { //Mikasa ganó
 			fondo.dibujarse(this.entorno, imagenFondoWin, 2.5);
 			entorno.cambiarFont("Arial", 25, Color.white);
 			entorno.escribirTexto("Presiona Barra Espacio para jugar de nuevo", 160, 400);
@@ -348,7 +357,8 @@ public class Juego extends InterfaceJuego
 				this.vidasJefe=5;
 				this.juegoFinalizado=false;
 				this.mikasaGana=false;
-				kyojinJefe = new Kyojin(700,300,30,70);
+				double[] posJefe = this.generarPosJefe();
+				kyojinJefe = new Kyojin(posJefe[0],posJefe[1],30,70);
 			}	
 		}
 		
@@ -413,10 +423,28 @@ public class Juego extends InterfaceJuego
 				}
 				else {
 					posOk = false;
-					break; // ¿¿rompe todo el for o esa pasada del for??
+					break; // 
 				}			
 			}
 			// ¿¿está bien kyojines que puedan salir solapados???
+		}
+		return new double[]{x,y};	
+	}
+	
+	public double[] generarPosJefe() {
+		double x=0;
+		double y=0;
+		boolean posOk = false;
+		//Evitamos solapamiento en el respawn
+		while(posOk==false){
+			x = r.nextInt(entorno.ancho());
+			y = r.nextInt(entorno.alto());
+			if(mikasa.coincidePos(x, y, mikasa.getDistancia())== false){
+				posOk = true;
+			}
+			else {
+				posOk = false; 
+			}			
 		}
 		return new double[]{x,y};	
 	}
