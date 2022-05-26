@@ -12,7 +12,6 @@ public class Mikasa {
 	private Image img1;
 	private Image img2;
 	private Image img3;
-	private int vidas;
 	double dist;
 	public boolean mikasaTitan; // Para saber si se convierte en kyojin o no
 	
@@ -24,7 +23,6 @@ public class Mikasa {
 //		this.chocaObstaculoAtras = false;
 		this.mikasaTitan = false;
 		this.dist = 100;
-		this.vidas = 3;
 		img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
 		img2 = Herramientas.cargarImagen("resources/mikaIzq.png");
 		img3 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
@@ -231,11 +229,6 @@ public class Mikasa {
 		}
 		return -1;
 	}
-	public int getVidas() {
-		return this.vidas;
-	}
-	public void setVidas(int vidas) {	
-		this.vidas = vidas;
-	}
+
 
 }

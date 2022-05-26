@@ -24,7 +24,7 @@ public class Juego extends InterfaceJuego
 	private Suero suero;
 	private Random r = new Random();
 	private Fondo fondo;
-	private int vidasContador;
+	private int vidasMikasa;
 	private double distObstaculos;
 	private double distSuero;
 	private double distRadar;
@@ -33,6 +33,7 @@ public class Juego extends InterfaceJuego
 	private int kyojinesEliminados;
 	private boolean juegoFinalizado;
 	private boolean jefeFinal;
+	private int vidasJefe;
 	private Image img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
 	private Image img2 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
 	private Image imagenFondo = Herramientas.cargarImagen("resources/pasto.jpg");
@@ -68,6 +69,10 @@ public class Juego extends InterfaceJuego
 		// Iteradores
 		itSuero = 0;
 		itKyogin = 0;
+		
+		//Vidas
+		vidasMikasa = 3;
+		vidasJefe = 5;
 		 
 		fondo = new Fondo();
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);		
@@ -208,8 +213,8 @@ public class Juego extends InterfaceJuego
 					kyojinesEliminados++;
 				}
 				else if (kyojinChocado == true && mikasa.mikasaTitan == false){
-					if(mikasa.getVidas()-1 > 0){
-						this.vidasContador++;
+					vidasMikasa--;
+					if(this.vidasMikasa > 0){
 						this.resetearSpawns();
 					}
 					else {
@@ -250,7 +255,7 @@ public class Juego extends InterfaceJuego
 		}
 		
 		entorno.cambiarFont("Arial", 32, Color.yellow);
-	    entorno.escribirTexto("Vidas: " + mikasa.getVidas(), 650, 60);
+	    entorno.escribirTexto("Vidas: " + this.vidasMikasa, 650, 60);
 	    entorno.escribirTexto("Kyojines eliminados: " + this.kyojinesEliminados, 60,590);		    
 		
 		// ...
@@ -273,11 +278,15 @@ public class Juego extends InterfaceJuego
 				if(proyectil !=null) {
 					boolean kyojinBaleado = proyectil.colisionKyojin(kyojinJefe, 40);
 					if(kyojinBaleado) {
-						this.eliminarKyojin(kyojinJefe);
+						vidasJefe--;
 						this.eliminarProyectil(proyectil);
-						this.jefeFinal=false;
-						this.juegoFinalizado=true;
-						this.mikasaGana=true;
+						if(vidasJefe==0) {
+							this.eliminarKyojin(kyojinJefe);
+							this.jefeFinal=false;
+							this.juegoFinalizado=true;
+							this.mikasaGana=true;
+							
+						}
 						break; // Ya muerto, no recorremos más proyectiles
 					}
 				}
@@ -294,6 +303,10 @@ public class Juego extends InterfaceJuego
 				}
 			}
 		}
+		
+		entorno.cambiarFont("Arial", 32, Color.yellow);
+	    entorno.escribirTexto("Vidas: " + this.vidasMikasa, 650, 60);
+	    entorno.escribirTexto("Vidas Jefe Final: " + this.vidasJefe, 60,590);	
 	}
 	
 	public void finDelJuego(boolean mikasaGana) {
@@ -305,18 +318,20 @@ public class Juego extends InterfaceJuego
 			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 				mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 				this.kyojinesEliminados=0;
-				this.vidasContador=0;
+				this.vidasMikasa=3;
+				this.vidasJefe=5;
 				this.juegoFinalizado=false;			
 			}	
 		}
-		else {
+		else { //Mikasa perdió
 			fondo.dibujarse(this.entorno, imagenFondoWin, 2.5);
 			entorno.cambiarFont("Arial", 25, Color.white);
 			entorno.escribirTexto("Presiona Barra Espacio para jugar de nuevo", 160, 400);
 			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
 				mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 				this.kyojinesEliminados=0;
-				this.vidasContador=0;
+				this.vidasMikasa=3;
+				this.vidasJefe=5;
 				this.juegoFinalizado=false;
 				this.mikasaGana=false;
 				kyojinJefe = new Kyojin(700,300,30,70);
@@ -331,7 +346,6 @@ public class Juego extends InterfaceJuego
 		mikasa = null;
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 		mikasa.dibujarse(entorno, img1);
-		mikasa.setVidas(mikasa.getVidas()-this.vidasContador);	
 		this.resetearKyojines();
 	}
 	
