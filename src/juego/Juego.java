@@ -286,9 +286,7 @@ public class Juego extends InterfaceJuego
 					mikasa.setX(this.entorno.ancho()-kyojinJefe.getX());;
 					mikasa.setY(this.entorno.alto()-kyojinJefe.getY());;
 					
-					double[] posJefe = this.generarPosJefe();
-					kyojinJefe.setX(posJefe[0]);
-					kyojinJefe.setY(posJefe[1]);
+					this.generarPosJefe(kyojinJefe);
 				}
 				else {
 					this.jefeFinal=false;
@@ -310,9 +308,8 @@ public class Juego extends InterfaceJuego
 							this.mikasaGana=true;
 							
 						}else {
-							double[] posJefe = this.generarPosJefe();
-							kyojinJefe.setX(posJefe[0]);
-							kyojinJefe.setY(posJefe[1]);
+						
+							this.generarPosJefe(kyojinJefe);
 						}
 						
 						break; // Ya muerto, no recorremos más proyectiles
@@ -362,8 +359,8 @@ public class Juego extends InterfaceJuego
 				this.vidasJefe=5;
 				this.juegoFinalizado=false;
 				this.mikasaGana=false;
-				double[] posJefe = this.generarPosJefe();
-				kyojinJefe = new Kyojin(posJefe[0],posJefe[1],30,70);
+				kyojinJefe = new Kyojin(0,0,30,70);
+				this.generarPosJefe(kyojinJefe);
 			}	
 		}
 		
@@ -436,7 +433,7 @@ public class Juego extends InterfaceJuego
 		return new double[]{x,y};	
 	}
 	
-	public double[] generarPosJefe() {
+	public void generarPosJefe(Kyojin jefe) {
 		double x=0;
 		double y=0;
 		boolean posOk = false;
@@ -451,7 +448,9 @@ public class Juego extends InterfaceJuego
 				posOk = false; 
 			}			
 		}
-		return new double[]{x,y};	
+		jefe.setX(x);
+		jefe.setY(y);
+			
 	}
 	
 	
