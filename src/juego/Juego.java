@@ -6,6 +6,8 @@ import java.awt.Image;
 import java.util.Calendar;
 import java.util.Random;
 
+import javax.sound.sampled.Clip;
+
 import entorno.Entorno;
 import entorno.Herramientas;
 import entorno.InterfaceJuego;
@@ -41,6 +43,16 @@ public class Juego extends InterfaceJuego
 	private Image imagenFondoWin = Herramientas.cargarImagen("resources/win.jpg");
 	private Image imagenKyojinNormal = Herramientas.cargarImagen("resources/kyojinIzq.png");
 	private Image imagenKyojinJefe = Herramientas.cargarImagen("resources/kyojin3.jpg");
+	private Clip sonVictoria = Herramientas.cargarSonido("resources/victoria.wav");
+	private Clip sonProyectil = Herramientas.cargarSonido("resources/proyectil.wav");
+	private Clip sonPerder = Herramientas.cargarSonido("resources/perder.wav");
+	private Clip sonMuereKyojin = Herramientas.cargarSonido("resources/muereKyojin.wav");
+	private Clip sonGritoJefeGano = Herramientas.cargarSonido("resources/gritoJefeGano.wav");
+	private Clip sonGritoJefePerdio = Herramientas.cargarSonido("resources/gritoJefePerdio.wav");
+	private Clip sonGritoMika = Herramientas.cargarSonido("resources/gritoMika2.wav");
+	private Clip sonAmbiente = Herramientas.cargarSonido("resources/ambiente2.wav");
+		
+	
 	private boolean mikasaGana;
 	// ...
 	
@@ -101,9 +113,11 @@ public class Juego extends InterfaceJuego
 	{
 		// Procesamiento de un instante de tiempo
 		if(this.juegoFinalizado == false && this.jefeFinal == false) {
+			this.sonAmbiente.loop(10);
 			this.juegoGeneral();
 		}
 		else if(this.juegoFinalizado == false && this.jefeFinal == true) {
+			this.sonAmbiente.loop(10);
 			this.juegoJefeFinal();
 		}
 		else if (this.juegoFinalizado == true && this.jefeFinal == false){
@@ -209,6 +223,7 @@ public class Juego extends InterfaceJuego
 				boolean kyojinChocado = mikasa.colisionKyogin(kyojines[i], 40);
 				if(kyojinChocado == true && mikasa.mikasaTitan == true) {
 					this.eliminarKyojin(kyojines[i]);
+					Herramientas.play("resources/muereKyojin.wav");
 					mikasa.mikasaTitan=false;
 					kyojinesEliminados++;
 				}
@@ -216,9 +231,13 @@ public class Juego extends InterfaceJuego
 					vidasMikasa--;
 					if(this.vidasMikasa > 0){
 						this.resetearSpawns();
+						this.sonGritoMika.start();
+						this.sonGritoMika.setMicrosecondPosition(0);
 					}
 					else {
 						this.juegoFinalizado=true;
+						this.sonPerder.start();
+						
 					}
 				}
 				else {
@@ -229,6 +248,7 @@ public class Juego extends InterfaceJuego
 							if(kyojinBaleado) {
 								this.eliminarKyojin(kyojines[i]);
 								this.eliminarProyectil(proyectil);
+								Herramientas.play("resources/gritoKyo2.wav");
 								kyojinesEliminados++;
 
 								break; // Ya muerto, no recorremos más proyectiles
@@ -285,13 +305,15 @@ public class Juego extends InterfaceJuego
 				if(this.vidasMikasa > 0){
 					mikasa.setX(this.entorno.ancho()-kyojinJefe.getX());;
 					mikasa.setY(this.entorno.alto()-kyojinJefe.getY());;
-					
+					this.sonGritoMika.start();
+					this.sonGritoMika.setMicrosecondPosition(0);
 					this.generarPosJefe(kyojinJefe);
 				}
 				else {
 					this.jefeFinal=false;
 					this.juegoFinalizado=true;
 					this.mikasaGana=false;
+					this.sonPerder.start();
 				}
 			}
 			
@@ -301,14 +323,21 @@ public class Juego extends InterfaceJuego
 					if(kyojinBaleado) {
 						vidasJefe--;
 						this.eliminarProyectil(proyectil);
-						if(vidasJefe==0) {
+						if(vidasJefe==1) {
+							//Herramientas.play("resources/gritoJefePerdio.wav");
+							this.sonGritoJefePerdio.start();
+							this.sonGritoJefePerdio.setMicrosecondPosition(0);
+						}
+						else if(vidasJefe==0) {
 							this.eliminarKyojin(kyojinJefe);
 							this.jefeFinal=false;
 							this.juegoFinalizado=true;
 							this.mikasaGana=true;
 							
+							this.sonVictoria.start();
+	
 						}else {
-						
+							Herramientas.play("resources/gritoKyo2.wav");
 							this.generarPosJefe(kyojinJefe);
 						}
 						
@@ -335,17 +364,21 @@ public class Juego extends InterfaceJuego
 	}
 	
 	public void finDelJuego(boolean mikasaGana) {
+		this.sonAmbiente.stop();
 		if ( mikasaGana == false ) {
 			this.resetearKyojines();
 			fondo.dibujarse(this.entorno, imagenFondoGameOver, 1);
 			entorno.cambiarFont("Arial", 25, Color.green);
 			entorno.escribirTexto("Presiona Barra Espacio para reintentar", 185, 430);
 			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
-				mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 				this.kyojinesEliminados=0;
+				this.resetearSpawns();
 				this.vidasMikasa=3;
 				this.vidasJefe=5;
-				this.juegoFinalizado=false;			
+				this.juegoFinalizado=false;
+				this.sonPerder.stop();
+				this.sonPerder.setMicrosecondPosition(0);
+				
 			}	
 		}
 		else { //Mikasa ganó
@@ -353,16 +386,19 @@ public class Juego extends InterfaceJuego
 			entorno.cambiarFont("Arial", 25, Color.white);
 			entorno.escribirTexto("Presiona Barra Espacio para jugar de nuevo", 160, 400);
 			if (entorno.sePresiono(entorno.TECLA_ESPACIO)) {
-				mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 				this.kyojinesEliminados=0;
+				this.resetearSpawns();
 				this.vidasMikasa=3;
 				this.vidasJefe=5;
 				this.juegoFinalizado=false;
 				this.mikasaGana=false;
 				kyojinJefe = new Kyojin(0,0,30,70);
 				this.generarPosJefe(kyojinJefe);
+				this.sonVictoria.stop();
+				this.sonVictoria.setMicrosecondPosition(0);
 			}	
 		}
+		
 		
 	}
 	

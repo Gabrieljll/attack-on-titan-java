@@ -110,7 +110,9 @@ public class Mikasa {
 		
 		if(e.sePresiono(e.TECLA_ESPACIO) && index!=-1){
 				proyectiles[index] =  new Proyectil(this.getX(), this.getY(),this.angulo, 30);
+				Herramientas.play("resources/proyectil.wav");
 		}
+		
 
 	}
 		
