@@ -73,11 +73,10 @@ public class Mikasa {
 		
 		if (entorno.estaPresionada(entorno.TECLA_DERECHA)){			
 			this.angulo = this.angulo + Herramientas.radianes(1);
-			//this.chocaObstaculoDelante=false;
 		}
+		
 		if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)){			
 			this.angulo = this.angulo + Herramientas.radianes(-1);
-			//this.chocaObstaculoDelante=false;
 		}
 		
 
@@ -100,12 +99,14 @@ public class Mikasa {
 		}
 	}
 	
-	public void disparar(Entorno e, Proyectil[] proyectiles, int index ) {	
-		// Espacio + índice con un valor entre 0 y 3 crea proyectil
+	public boolean disparar(Entorno e, Proyectil[] proyectiles, int index ) {	
+		
 		if(e.sePresiono(e.TECLA_ESPACIO) && index!=-1){
 				proyectiles[index] =  new Proyectil(this.getX(), this.getY(),this.angulo, 30);
 				Herramientas.play("resources/proyectil.wav");
+				return true;
 		}
+		return false;
 		
 
 	}
@@ -152,9 +153,17 @@ public class Mikasa {
 		}		
 	}
 	
-	public boolean chocaSuero(Suero suero, double dist) {
+	public boolean colisionSuero(Suero suero, double dist) {
 		if(((this.getX() - suero.getX()) * (this.getX() - suero.getX()) + 
 		    (this.getY() - suero.getY()) * (this.getY() - suero.getY()) < dist*dist)) {
+			return true;
+		}
+	return false;
+	}
+	
+	public boolean colisionMunicion(Municion municion, double dist) {
+		if(((this.getX() - municion.getX()) * (this.getX() - municion.getX()) + 
+		    (this.getY() - municion.getY()) * (this.getY() - municion.getY()) < dist*dist)) {
 			return true;
 		}
 	return false;

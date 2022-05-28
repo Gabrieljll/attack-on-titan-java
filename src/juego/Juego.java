@@ -25,13 +25,17 @@ public class Juego extends InterfaceJuego
 	private Kyojin kyojinJefe;
 	private Obstaculo[] obstaculos;
 	private Suero suero;
+	private Municion municion;
 	
 	private Random r = new Random();	
 	
-	// Contadores
-	private int vidasMikasa;
+	// Iteradores
 	private int itSuero;
 	private int itKyogin;
+	
+	// Contadores
+	private int vidasMikasa;
+	private int municionRestante;
 	private int kyojinesEliminados;
 	private int vidasJefe;
 	
@@ -105,10 +109,11 @@ public class Juego extends InterfaceJuego
 		// Iteradores
 		itSuero = 0;
 		itKyogin = 0;
-		
-		//Vidas
+				
+		//Vidas&Municion
 		vidasMikasa = 3;
 		vidasJefe = 5;
+		municionRestante = 4;
 		resetearKyojines();
 			
 		// ...
@@ -152,6 +157,7 @@ public class Juego extends InterfaceJuego
 		obstaculos[3].dibArbol(entorno);
 		obstaculos[4].dibCasa2(entorno);
 		
+		// Respawn de suero
 		if(r.nextInt(650) < 1 && suero==null && !mikasa.getMikasaTitan()){
 			double[] nuevaPos = this.generarPos();
 			suero = new Suero(nuevaPos[0],nuevaPos[1],distSuero);
@@ -161,21 +167,27 @@ public class Juego extends InterfaceJuego
 			suero.dibujarse(entorno);
 		}
 		
+		//Colision Mika Suero
+		if(suero!=null && mikasa.colisionSuero(suero, distSuero)){
+			suero = null;
+			mikasa.seVuelveTitan();			
+		}
+		
 		//Mikassa 
 		
 		mikasa.mover(entorno);
-		mikasa.disparar(entorno,this.proyectiles, lugarProyectil(proyectiles));
+		mikasaDispara();
+		
+		
 		if( !mikasa.mikasaTitan){
 			mikasa.dibujarse(entorno, this.imagenMika);	
 		}		
 		else{
 			mikasa.dibujarse(entorno, this.imagenMikaTitan);
 		}
+
+		municion();
 		
-		if(suero!=null && mikasa.chocaSuero(suero, distSuero)){
-			suero = null;
-			mikasa.seVuelveTitan();			
-		}
 				
 		//Mikasa Colision obstaculos
 		Obstaculo obstaculoChocado = mikasa.colisionObstaculo(obstaculos, distObstaculos);
@@ -203,20 +215,19 @@ public class Juego extends InterfaceJuego
 		}
 			
 			
-			////Colisiones kyojines
-			for(int i=0;i<kyojines.length-1;i++) {
-				for(int j=i+1;j<kyojines.length;j++) {
-					if(kyojines[i]!=null && kyojines[j]!=null) {
-						if(kyojines[i].colisionKyojin(kyojines[j], 70)) {
-							kyojines[i].setAngulo(Herramientas.radianes(r.nextInt(90)));
-							kyojines[i].moverse();
-							kyojines[j].setAngulo(Herramientas.radianes(150));
-							kyojines[j].moverse();
-						}
+		////Colisiones kyojines
+		for(int i=0;i<kyojines.length-1;i++) {
+			for(int j=i+1;j<kyojines.length;j++) {
+				if(kyojines[i]!=null && kyojines[j]!=null) {
+					if(kyojines[i].colisionKyojin(kyojines[j], 70)) {
+						kyojines[i].setAngulo(Herramientas.radianes(r.nextInt(90)));
+						kyojines[i].moverse();
+						kyojines[j].setAngulo(Herramientas.radianes(150));
+						kyojines[j].moverse();
 					}
 				}
 			}
-			////
+		}
 			
 		
 		//Kyojines
@@ -277,6 +288,7 @@ public class Juego extends InterfaceJuego
 					
 				if(kyojinesEliminados >= 6) {
 					this.jefeFinal = true;
+					this.municion = null;
 					this.resetearProyectiles();
 				}
 				if(kyojinChocado == true && mikasa.mikasaTitan == false) {
@@ -296,6 +308,7 @@ public class Juego extends InterfaceJuego
 		
 		entorno.cambiarFont("Arial", 32, Color.yellow);
 	    entorno.escribirTexto("Vidas: " + this.vidasMikasa, 650, 60);
+	    entorno.escribirTexto("Municion: " + this.municionRestante, 610, 85);
 	    entorno.escribirTexto("Kyojines eliminados: " + this.kyojinesEliminados, 60,590);		    
 		
 		// ...
@@ -307,9 +320,10 @@ public class Juego extends InterfaceJuego
 		fondo.dibujarse(this.entorno, imagenFondo, 2);
 		mikasa.mover(entorno);
 		mikasa.dibujarse(entorno, this.imagenMika);		
-		mikasa.disparar(entorno,this.proyectiles, lugarProyectil(proyectiles));
+		mikasaDispara();
 		
 		
+		municion();
 		
 		//KyojinJefe
 
@@ -391,6 +405,7 @@ public class Juego extends InterfaceJuego
 		// Carteles de vidas
 		entorno.cambiarFont("Arial", 32, Color.yellow);
 	    entorno.escribirTexto("Vidas: " + this.vidasMikasa, 650, 60);
+	    entorno.escribirTexto("Municion: " + this.municionRestante, 610, 85);
 	    entorno.escribirTexto("Vidas Jefe Final: " + this.vidasJefe, 60,590);	
 	}
 	
@@ -542,6 +557,32 @@ public class Juego extends InterfaceJuego
 			}
 		}
 		return -1;
+	}
+	
+	public void mikasaDispara() {
+		if(municionRestante>=1){
+			if(mikasa.disparar(entorno,this.proyectiles, lugarProyectil(proyectiles))) {
+				municionRestante--;
+			}
+		}
+	}
+	
+	public void municion() {
+		//Respawn de munición
+		if(r.nextInt(250) < 1 && municion==null){
+			double[] nuevaPos = this.generarPos();
+			municion = new Municion(nuevaPos[0],nuevaPos[1],distSuero);
+		}
+		
+		if(municion!=null) {
+			municion.dibujarse(entorno);
+		}
+
+		//Colision Mika Municion		
+		if(municion!=null && mikasa.colisionMunicion(municion, distSuero)){
+			municion = null;
+			municionRestante=municionRestante+2;			
+		}
 	}
 
 	
