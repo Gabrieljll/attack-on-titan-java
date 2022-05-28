@@ -1,6 +1,5 @@
 package juego;
 
-import java.awt.Color;
 import java.awt.Image;
 
 import entorno.Entorno;
@@ -13,16 +12,17 @@ public class Suero {
 	private Image imagenSuero;
 	
 	
-	public Suero(double x, double y) {
+	public Suero(double x, double y,double dist) {
 		this.x = x;
 		this.y = y;
-		this.dist = 20;
+		this.setDist(dist);
 		this.imagenSuero = Herramientas.cargarImagen("resources/suero.png");
 	}
 	
 	public void dibujarse(Entorno entorno) {
 		//entorno.dibujarCirculo(x, y, dist, Color.RED);
 		entorno.dibujarImagen(imagenSuero, this.x, this.y, 0, 0.06);
+	
 	}
 
 	public double getX() {
@@ -30,6 +30,14 @@ public class Suero {
 	}
 	public double getY() {
 		return this.y;
+	}
+
+	public double getDist() {
+		return dist;
+	}
+
+	public void setDist(double dist) {
+		this.dist = dist;
 	}
 	
 }

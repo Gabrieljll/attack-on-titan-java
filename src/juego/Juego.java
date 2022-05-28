@@ -3,7 +3,6 @@ package juego;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.util.Calendar;
 import java.util.Random;
 
 import javax.sound.sampled.Clip;
@@ -44,22 +43,18 @@ public class Juego extends InterfaceJuego
 	private double velocidadKyojines;
 	private double velocidadKyojinesAumentada;
 	//carga de imágenes
-	private Image img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
-	private Image img2 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
-	private Image imagenFondo = Herramientas.cargarImagen("resources/pasto.jpg");
+	private Image imagenMika = Herramientas.cargarImagen("resources/mika.png");		
+	private Image imagenMikaTitan = Herramientas.cargarImagen("resources/mikaTitan.png");
+	private Image imagenFondo = Herramientas.cargarImagen("resources/fondo.jpg");
 	private Image imagenFondoGameOver = Herramientas.cargarImagen("resources/fondo-gameover.jpg");
 	private Image imagenFondoWin = Herramientas.cargarImagen("resources/win.jpg");
-	private Image imagenKyojinNormal = Herramientas.cargarImagen("resources/kyojinIzq.png");
-	private Image imagenKyojinJefe = Herramientas.cargarImagen("resources/TITAN2.png");
+	private Image imagenKyojinNormal = Herramientas.cargarImagen("resources/kyojin.png");
+	private Image imagenKyojinJefe = Herramientas.cargarImagen("resources/jefeFinal.png");
+	
 	//carga de audios
 	private Clip sonVictoria = Herramientas.cargarSonido("resources/victoria.wav");
-	private Clip sonProyectil = Herramientas.cargarSonido("resources/proyectil.wav");
 	private Clip sonPerder = Herramientas.cargarSonido("resources/perder.wav");
-	private Clip sonMuereKyojin = Herramientas.cargarSonido("resources/muereKyojin.wav");
-	private Clip sonGritoJefeGano = Herramientas.cargarSonido("resources/gritoJefeGano.wav");
-	private Clip sonGritoJefePerdio = Herramientas.cargarSonido("resources/gritoJefePerdio.wav");
-	private Clip sonGritoMika = Herramientas.cargarSonido("resources/gritoMika2.wav");
-	private Clip sonAmbiente = Herramientas.cargarSonido("resources/ambiente2.wav");
+	private Clip sonAmbiente = Herramientas.cargarSonido("resources/ambiente.wav");
 		
 	
 	// ...
@@ -89,7 +84,8 @@ public class Juego extends InterfaceJuego
 	
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);	
 		kyojines = new Kyojin[4];
-		kyojinJefe = new Kyojin(0,0,10,20, this.velocidadJefe);
+		//kyojinJefe = new Kyojin(0,0,10,20, this.velocidadJefe);
+		kyojinJefe = new Kyojin(0,0,this.velocidadJefe);
 		proyectiles = new Proyectil[4];
 		
 		// Distancias
@@ -146,7 +142,7 @@ public class Juego extends InterfaceJuego
 			
 			if(r.nextInt(650) < 1 && suero==null && !mikasa.getMikasaTitan()){
 				double[] nuevaPos = this.generarPos();
-				suero = new Suero(nuevaPos[0],nuevaPos[1]);
+				suero = new Suero(nuevaPos[0],nuevaPos[1],distSuero);
 			}
 			
 			if(suero!=null) {
@@ -159,10 +155,10 @@ public class Juego extends InterfaceJuego
 			mikasa.limiteDeCiudad(entorno);
 			mikasa.disparar(entorno,this.proyectiles);
 			if( !mikasa.mikasaTitan){
-				mikasa.dibujarse(entorno, this.img1);	
+				mikasa.dibujarse(entorno, this.imagenMika);	
 			}		
 			else{
-				mikasa.dibujarse(entorno, this.img2);
+				mikasa.dibujarse(entorno, this.imagenMikaTitan);
 			}
 			
 			if(suero!=null && mikasa.chocaSuero(suero, distSuero)){
@@ -243,8 +239,7 @@ public class Juego extends InterfaceJuego
 						vidasMikasa--;
 						if(this.vidasMikasa > 0){
 							this.resetearSpawns();
-							this.sonGritoMika.start();
-							this.sonGritoMika.setMicrosecondPosition(0);
+							Herramientas.play("resources/gritoMika.wav");
 						}
 						else {
 							this.juegoFinalizado=true;
@@ -260,7 +255,7 @@ public class Juego extends InterfaceJuego
 								if(kyojinBaleado) {
 									this.eliminarKyojin(kyojines[i]);
 									this.eliminarProyectil(proyectil);
-									Herramientas.play("resources/gritoKyo2.wav");
+									Herramientas.play("resources/gritoKyo.wav");
 									kyojinesEliminados++;
 	
 									break; // Ya muerto, no recorremos más proyectiles
@@ -282,7 +277,8 @@ public class Juego extends InterfaceJuego
 					itKyogin++;
 					if(itKyogin==400) {
 						double[] nuevaPos = this.generarPos();
-						kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],10,20, this.velocidadKyojines);
+						//kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],10,20, this.velocidadKyojines);
+						kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1], this.velocidadKyojines);
 						itKyogin = 0; 
 					}
 				}
@@ -300,7 +296,7 @@ public class Juego extends InterfaceJuego
 			//Mikasa
 			fondo.dibujarse(this.entorno, imagenFondo, 2);
 			mikasa.mover(entorno);
-			mikasa.dibujarse(entorno, this.img1);		
+			mikasa.dibujarse(entorno, this.imagenMika);		
 			mikasa.disparar(entorno,this.proyectiles);
 			mikasa.limiteDeCiudad(entorno);
 			
@@ -323,8 +319,7 @@ public class Juego extends InterfaceJuego
 					if(this.vidasMikasa > 0){
 						mikasa.setX(this.entorno.ancho()-kyojinJefe.getX());;
 						mikasa.setY(this.entorno.alto()-kyojinJefe.getY());;
-						this.sonGritoMika.start();
-						this.sonGritoMika.setMicrosecondPosition(0);
+						Herramientas.play("resources/gritoMika.wav");
 						this.generarPosJefe(kyojinJefe);
 					}
 					else {
@@ -343,8 +338,6 @@ public class Juego extends InterfaceJuego
 							this.resetearProyectiles();
 							if(vidasJefe==1) {
 								Herramientas.play("resources/gritoJefePerdio.wav");
-							    this.sonGritoJefePerdio.start();
-								this.sonGritoJefePerdio.setMicrosecondPosition(0);
 							}
 							else if(vidasJefe==0) {
 								this.eliminarKyojin(kyojinJefe);
@@ -355,7 +348,7 @@ public class Juego extends InterfaceJuego
 								this.sonVictoria.start();
 		
 							}else {
-								Herramientas.play("resources/gritoKyo2.wav");
+								Herramientas.play("resources/gritoKyo.wav");
 								this.generarPosJefe(kyojinJefe);
 							}
 							
@@ -410,7 +403,9 @@ public class Juego extends InterfaceJuego
 				this.vidasJefe=5;
 				this.juegoFinalizado=false;
 				this.mikasaGana=false;
-				kyojinJefe = new Kyojin(0,0,30,70, this.velocidadJefe);
+				//kyojinJefe = new Kyojin(0,0,30,70, this.velocidadJefe);
+				kyojinJefe = new Kyojin(0,0, this.velocidadJefe);
+				
 				this.generarPosJefe(kyojinJefe);
 				this.sonVictoria.stop();
 				this.sonVictoria.setMicrosecondPosition(0);
@@ -421,7 +416,7 @@ public class Juego extends InterfaceJuego
 	public void resetearSpawns() {		
 		mikasa = null;
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
-		mikasa.dibujarse(entorno, img1);
+		mikasa.dibujarse(entorno, imagenMika);
 		this.resetearKyojines();
 		this.resetearProyectiles();
 	}
@@ -453,7 +448,8 @@ public class Juego extends InterfaceJuego
 		//Creo cuatro nuevos
 		for( int i = 0; i< kyojines.length; i++) {
 			double[] nuevaPos = this.generarPos();
-			kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],20,60, this.velocidadKyojines);
+			kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1], this.velocidadKyojines);
+			//kyojines[i] = new Kyojin(nuevaPos[0],nuevaPos[1],20,60, this.velocidadKyojines);
 		}	
 	}
 	

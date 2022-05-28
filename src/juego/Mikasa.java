@@ -9,9 +9,6 @@ public class Mikasa {
 	private double x;
 	private double y;
     double angulo;
-	private Image img1;
-	private Image img2;
-	private Image img3;
 	double dist;
 	public boolean mikasaTitan; // Para saber si se convierte en kyojin o no
 	
@@ -19,13 +16,8 @@ public class Mikasa {
 		this.x = x;
 		this.y = y;
 		this.angulo = angulo;
-//		this.chocaObstaculoDelante = false;
-//		this.chocaObstaculoAtras = false;
 		this.mikasaTitan = false;
 		this.dist = 100;
-		img1 = Herramientas.cargarImagen("resources/mikaDer.png");		
-		img2 = Herramientas.cargarImagen("resources/mikaIzq.png");
-		img3 = Herramientas.cargarImagen("resources/mikaTitanDer.png");
 		
 	}
 	public void dibujarse(Entorno entorno, Image img) {
@@ -36,7 +28,7 @@ public class Mikasa {
 	public void mover(Entorno entorno) 
 	{
 		
-		//Generamos flags para mantenernos dentro de los l�mites de la ciudad
+		//Generamos flags para mantenernos dentro de los limites de la ciudad
 		boolean limiteX=false;
 		boolean limiteY=false;
 		int limitPixel = 10;
@@ -116,7 +108,7 @@ public class Mikasa {
 
 	}
 		
-	//Respetar l�mites de la ciudad
+	//Respetar limites de la ciudad
 	public void limiteDeCiudad(Entorno entorno) {
 		if (this.getX() >= entorno.ancho() || this.getY() >= entorno.alto()) {
 			this.angulo = this.angulo - 90;
@@ -183,35 +175,36 @@ public class Mikasa {
 		this.mikasaTitan = false;
 	}
 	
-	  public boolean coincidePos(double x, double y, double dist){
-		  if(((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < dist*dist)) {
-			  return true;
-		  }
-		  return false;
-	  }
-	  
-	  public boolean getMikasaTitan(){
-		  return this.mikasaTitan;
-	  }
-	  
-	  public double getDistancia() {
-		  return this.dist;
-	  }
-	  public double getX() {
-		  return this.x;
-	  }
+	public boolean coincidePos(double x, double y, double dist){
+		if(((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y) < dist*dist)) {
+			return true;
+		}
+		return false;
+	}
+  
+	public boolean getMikasaTitan(){
+		return this.mikasaTitan;
+	}
+  
+	public double getDistancia() {
+		return this.dist;
+	}
+	
+	public double getX() {
+		return this.x;
+	}
 	  
 	public void setX(double posX) {
 		this.x = posX;
 	}
+	
 	public double getY() {
 		return this.y;
 	}
+	
 	public void setY(double posY) {
 		this.y = posY;
 	}
-	
-	
 	
 	public int lugarProyectil(Proyectil[] proyectiles){
 		for (int i=0; i<proyectiles.length;i++){

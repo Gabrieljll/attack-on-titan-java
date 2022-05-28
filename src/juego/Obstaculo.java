@@ -7,8 +7,6 @@ public class Obstaculo {
   //variables de instancia
   private double x;
   private double y;
-  private double ancho;
-  private double alto;
   private double angulo;
   private Image casa;
   private Image casa2;
@@ -17,8 +15,6 @@ public class Obstaculo {
   public Obstaculo(int x, int y){
     this.x  = x;
     this.y = y;
-    this.alto = 30;
-    this.ancho= 20;
     this.casa = Herramientas.cargarImagen("resources/casa.png");
     this.casa2 = Herramientas.cargarImagen("resources/casa2.png");
     this.arbol = Herramientas.cargarImagen("resources/arbol.png");

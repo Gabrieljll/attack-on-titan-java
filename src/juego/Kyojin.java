@@ -1,26 +1,20 @@
 package juego;
 import java.awt.*;
-import java.util.Random;
 
 import entorno.Entorno;
-import entorno.Herramientas;
+
 public class Kyojin {
 	//Variables de instancia
 	private double x;
 	private double y;
-	private double ancho;
-	private double alto;
 	private double angulo;
-	private Random r =  new Random(20);
 	private double velocidad;
 
 	
 	//Metodo constructor
-	Kyojin(double x, double y, double ancho, double alto, double velocidad){
+	Kyojin(double x, double y, double velocidad){
 		this.x = x;
 		this.y = y;
-		this.ancho = ancho;
-		this.alto = alto;
 		this.velocidad = velocidad;
 	}
 	
