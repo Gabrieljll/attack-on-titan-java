@@ -271,6 +271,7 @@ public class Juego extends InterfaceJuego
 						
 					if(kyojinesEliminados >= 6) {
 						this.jefeFinal = true;
+						this.resetearProyectiles();
 					}
 					if(kyojinChocado == true && mikasa.mikasaTitan == false) {
 						mikasa.mikasaTitan=false;					
@@ -339,7 +340,7 @@ public class Juego extends InterfaceJuego
 						boolean kyojinBaleado = proyectil.colisionKyojin(kyojinJefe, 40);
 						if(kyojinBaleado) {
 							vidasJefe--;
-							this.eliminarProyectil(proyectil);
+							this.resetearProyectiles();
 							if(vidasJefe==1) {
 								Herramientas.play("resources/gritoJefePerdio.wav");
 							    this.sonGritoJefePerdio.start();
@@ -422,12 +423,24 @@ public class Juego extends InterfaceJuego
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 		mikasa.dibujarse(entorno, img1);
 		this.resetearKyojines();
+		proyectiles = null;
+		proyectiles = new Proyectil[4];
+		this.resetearProyectiles();
 	}
 	
 	public void eliminarProyectil(Proyectil proyectilLanzado) {
 		for( int i = 0; i< proyectiles.length; i++) {
 			if ( proyectiles[i]!=null && proyectiles[i].equals(proyectilLanzado)) {		
 				proyectiles[i]=null;	
+			}
+		}
+	}
+	
+	public void resetearProyectiles() {
+		//Desecho si había
+		for( int i = 0; i< proyectiles.length; i++) {
+			if(proyectiles[i]!=null){
+				eliminarProyectil(proyectiles[i]);
 			}
 		}
 	}
