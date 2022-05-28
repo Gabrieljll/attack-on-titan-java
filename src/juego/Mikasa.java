@@ -127,13 +127,12 @@ public class Mikasa {
 		
 	}
 
-	public boolean colisionKyogin(Kyojin kyojin, double dist) {
+	public boolean colisionKyojin(Kyojin kyojin, double dist) {
+		if(((this.getX() - kyojin.getX()) * (this.getX() - kyojin.getX()) + 
+		    (this.getY() - kyojin.getY()) * (this.getY() - kyojin.getY()) < dist*dist)) {
+			 return true;
 		
-			if(((this.getX() - kyojin.getX()) * (this.getX() - kyojin.getX()) + 
-			    (this.getY() - kyojin.getY()) * (this.getY() - kyojin.getY()) < dist*dist)) {
-				 return true;
-			
-			}
+		}
 		return false;	
 	}
 	
@@ -182,15 +181,6 @@ public class Mikasa {
 	}
 	public void seVuelveNormal() {
 		this.mikasaTitan = false;
-	}
-	public boolean colisionKyojin(Kyojin[] kyojines, double dist) {
-		for(int i =0; i < kyojines.length; i++) {
-			if(((this.getX() - kyojines[i].getX()) * (this.getX() - kyojines[i].getX()) + 
-	            (this.getY() - kyojines[i].getY()) * (this.getY() - kyojines[i].getY()) < dist*dist  )) {
-				return true;
-			}
-		}
-		return false;	
 	}
 	
 	  public boolean coincidePos(double x, double y, double dist){

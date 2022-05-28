@@ -15,9 +15,6 @@ public class Proyectil {
 	double radio;
 	double velocidad;
 	private Image img;
-
-
-	
 	
 	Proyectil(double x, double y, double angulo, double radio){
 		this.x = x;

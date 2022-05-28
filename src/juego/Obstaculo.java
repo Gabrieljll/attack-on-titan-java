@@ -18,7 +18,7 @@ public class Obstaculo {
     this.x  = x;
     this.y = y;
     this.alto = 30;
-    this.alto= 20;
+    this.ancho= 20;
     this.casa = Herramientas.cargarImagen("resources/casa.png");
     this.casa2 = Herramientas.cargarImagen("resources/casa2.png");
     this.arbol = Herramientas.cargarImagen("resources/arbol.png");
@@ -29,9 +29,11 @@ public class Obstaculo {
     e.dibujarImagen(casa, x, y, angulo, 0.3);
     
   }
+  
   public void dibCasa2(Entorno e) {
     e.dibujarImagen(casa2, x, y, angulo, 0.3);
   }
+  
   public void dibArbol(Entorno e) {
     e.dibujarImagen(arbol, x, y, angulo, 0.1);
   }

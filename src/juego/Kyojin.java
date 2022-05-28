@@ -16,12 +16,12 @@ public class Kyojin {
 
 	
 	//Metodo constructor
-	Kyojin(double x, double y, double ancho, double alto){
+	Kyojin(double x, double y, double ancho, double alto, double velocidad){
 		this.x = x;
 		this.y = y;
 		this.ancho = ancho;
 		this.alto = alto;
-		this.velocidad = 0.8;
+		this.velocidad = velocidad;
 	}
 	
 	public void dibujarse(Entorno entorno, Image imagenKyojin, double escala) {
@@ -62,11 +62,12 @@ public class Kyojin {
 		return false;
 	} 
 	
-	public void radar(Mikasa mikasa, double dist){
+	public boolean radar(Mikasa mikasa, double dist){
 	    if((this.getX() - mikasa.getX()) < dist && (this.getY() - mikasa.getY()) < dist){
 	    	this.angulo = Math.atan2( mikasa.getY() - this.getY() , mikasa.getX() - this.getX() );
+	    	return true;
 	    }else {
-	    	this.moverse();
+	    	return false;
 	    }
 	}
 	
@@ -98,6 +99,11 @@ public class Kyojin {
 		}
 		public void setAngulo(double angulo) {
 			this.angulo = angulo;
+		}
+
+		public void setVelocidad(double velocidad) {
+			this.velocidad = velocidad;
+			
 		}
 
 
