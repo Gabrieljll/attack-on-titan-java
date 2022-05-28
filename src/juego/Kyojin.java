@@ -19,8 +19,6 @@ public class Kyojin {
 	}
 	
 	public void dibujarse(Entorno entorno, Image imagenKyojin, double escala) {
-		//rectangulo(x,y,ancho, alto,angulo, color)
-		//entorno.dibujarRectangulo(this.posX, this.posY, 20, 60, this.angulo, Color.GREEN);
 		entorno.dibujarImagen(imagenKyojin, x, y, angulo,escala);
 	}
 	
@@ -66,39 +64,39 @@ public class Kyojin {
 	}
 	
 	public void esquivarObstaculo(Entorno entorno, Obstaculo obstaculoChocado) {
-			if(obstaculoChocado.getX() < this.getX() && obstaculoChocado.getY() < this.getY()) {
-				this.setX(this.getX()+2);
-				this.setY(this.getY()+2);
-			}else {
-				this.setX(this.getX()-2);
-				this.setY(this.getY()-2);
-			}		
+		if(obstaculoChocado.getX() < this.getX() && obstaculoChocado.getY() < this.getY()) {
+			this.setX(this.getX()+2);
+			this.setY(this.getY()+2);
+		}else {
+			this.setX(this.getX()-2);
+			this.setY(this.getY()-2);
+		}		
 	}
 	
 		
-		public double getX() {
-			return this.x;
-		}
-		public void setX(double posX) {
-			this.x = posX;
-		}
-		public double getY() {
-			return this.y;
-		}
-		public void setY(double posY) {
-			this.y = posY;
-		}
-		public double getAngulo() {
-			return angulo;
-		}
-		public void setAngulo(double angulo) {
-			this.angulo = angulo;
-		}
+	public double getX() {
+		return this.x;
+	}
+	public void setX(double posX) {
+		this.x = posX;
+	}
+	public double getY() {
+		return this.y;
+	}
+	public void setY(double posY) {
+		this.y = posY;
+	}
+	public double getAngulo() {
+		return angulo;
+	}
+	public void setAngulo(double angulo) {
+		this.angulo = angulo;
+	}
 
-		public void setVelocidad(double velocidad) {
-			this.velocidad = velocidad;
-			
-		}
+	public void setVelocidad(double velocidad) {
+		this.velocidad = velocidad;
+		
+	}
 
 
 }

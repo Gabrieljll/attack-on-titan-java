@@ -18,21 +18,21 @@ public class Mikasa {
 		this.angulo = angulo;
 		this.mikasaTitan = false;
 		this.dist = 100;
-		
 	}
+	
 	public void dibujarse(Entorno entorno, Image img) {
 
 		//entorno.dibujarTriangulo(this.x, this.y, 50, 30, this.angulo, Color.blue);
 		entorno.dibujarImagen(img, x, y, angulo,0.1);
 	}
+	
 	public void mover(Entorno entorno) 
 	{
 		
 		//Generamos flags para mantenernos dentro de los limites de la ciudad
 		boolean limiteX=false;
 		boolean limiteY=false;
-		int limitPixel = 10;
-		
+		int limitPixel = 10; // Evitamos que la imagen desaparezca en el borde
 		if(this.x >= entorno.ancho()-limitPixel || this.x <= limitPixel){
 			limiteX = true;
 		}
@@ -44,12 +44,16 @@ public class Mikasa {
 		
 		if (entorno.estaPresionada(entorno.TECLA_ARRIBA)){
 			
+			//Else = se alcanzo limite
 			if(limiteY==false){
 				this.y += Math.sin(this.angulo)*2;
 							}
-			else { //Identificamos cuï¿½l es el lï¿½mite en el que estamos y reasignamos la pos anterior para que el siguiente checkeo no estemos en el lï¿½mite
+			else { 
+				//Cuando y=0 necesitamos sumar pixel a y
 				if(y<=limitPixel)
 					this.y = limitPixel+1;
+				//Cuando y!=0 reasignamos el límite máximo en y restando el margen de pixel +1
+				//El +1 evita que se quede "pegada al límite"
 				else
 					this.y = entorno.alto()-(limitPixel+1);
 			}
@@ -77,7 +81,7 @@ public class Mikasa {
 		}
 		
 
-		
+		//Caminar para atrás es más lento
 		if (entorno.estaPresionada(entorno.TECLA_ABAJO)){
 			if(limiteX==false){
 				this.x -= Math.cos(this.angulo)*1.1;
@@ -96,10 +100,8 @@ public class Mikasa {
 		}
 	}
 	
-	public void disparar(Entorno e, Proyectil[] proyectiles ) {
-		
-		int index = lugarProyectil(proyectiles);
-		
+	public void disparar(Entorno e, Proyectil[] proyectiles, int index ) {	
+		// Espacio + índice con un valor entre 0 y 3 crea proyectil
 		if(e.sePresiono(e.TECLA_ESPACIO) && index!=-1){
 				proyectiles[index] =  new Proyectil(this.getX(), this.getY(),this.angulo, 30);
 				Herramientas.play("resources/proyectil.wav");
@@ -108,16 +110,6 @@ public class Mikasa {
 
 	}
 		
-	//Respetar limites de la ciudad
-	public void limiteDeCiudad(Entorno entorno) {
-		if (this.getX() >= entorno.ancho() || this.getY() >= entorno.alto()) {
-			this.angulo = this.angulo - 90;
-		}
-		if (this.getX() <= 0 || this.getY() <= 0) {
-			this.angulo = this.angulo + 90;
-		}
-		
-	}
 
 	public boolean colisionKyojin(Kyojin kyojin, double dist) {
 		if(((this.getX() - kyojin.getX()) * (this.getX() - kyojin.getX()) + 
@@ -206,14 +198,6 @@ public class Mikasa {
 		this.y = posY;
 	}
 	
-	public int lugarProyectil(Proyectil[] proyectiles){
-		for (int i=0; i<proyectiles.length;i++){
-			if(proyectiles[i]==null){
-				return i;
-			}
-		}
-		return -1;
-	}
 
 
 }
