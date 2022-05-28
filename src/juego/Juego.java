@@ -423,8 +423,6 @@ public class Juego extends InterfaceJuego
 		mikasa = new Mikasa(entorno.ancho()/2,entorno.alto()/2);
 		mikasa.dibujarse(entorno, img1);
 		this.resetearKyojines();
-		proyectiles = null;
-		proyectiles = new Proyectil[4];
 		this.resetearProyectiles();
 	}
 	
