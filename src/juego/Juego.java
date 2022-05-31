@@ -86,7 +86,7 @@ public class Juego extends InterfaceJuego
 		this.velocidadKyojines= 0.8;
 		this.velocidadKyojinesAumentada= 0.9;
 		this.velocidadJefe= 0.9;
-		this.velocidadJefeAumentada=1;
+		this.velocidadJefeAumentada=1.4;
 		
 		// Instanciamos obstáculos en posiciones fijas
 		obstaculos = new Obstaculo[5];
