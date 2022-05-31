@@ -514,8 +514,8 @@ public class Juego extends InterfaceJuego
 		//Evitamos solapamiento en el respawn
 		while(posOk==false){
 			// Se genera valor aleatorio de x,y dentro de los márgenes del entorno
-			x = r.nextInt(entorno.ancho());
-			y = r.nextInt(entorno.alto());
+			x = 10+r.nextInt(entorno.ancho()-10);// Mínimo 10 y máximo ancho-10 para evitar respawn en márgenes
+			y = 10+r.nextInt(entorno.alto()-10);
 			// Se comprobará que no coincida con pos de obstáculos o mikasa
 			for(int j=0;j<obstaculos.length;j++) {
 				if(obstaculos[j].coincidePos(x, y, distObstaculos)==false && mikasa.coincidePos(x, y, mikasa.getDistancia())== false){
@@ -538,8 +538,8 @@ public class Juego extends InterfaceJuego
 		boolean posOk = false;
 		
 		while(posOk==false){
-			x = r.nextInt(entorno.ancho());
-			y = r.nextInt(entorno.alto());
+			x = 10+r.nextInt(entorno.ancho()-10);
+			y = 10+r.nextInt(entorno.alto()-10);
 			if(mikasa.coincidePos(x, y, mikasa.getDistancia())== false){
 				posOk = true;
 			}
