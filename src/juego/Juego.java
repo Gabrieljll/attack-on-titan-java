@@ -423,6 +423,7 @@ public class Juego extends InterfaceJuego
 				this.kyojinesEliminados=0;
 				this.resetearSpawns();
 				this.vidasMikasa=3;
+				this.municionRestante = 4;
 				this.vidasJefe=5;
 				this.juegoFinalizado=false;
 				this.sonPerder.stop();
@@ -440,6 +441,7 @@ public class Juego extends InterfaceJuego
 				this.resetearSpawns();
 				this.vidasMikasa=3;
 				this.vidasJefe=5;
+				this.municionRestante = 4;
 				this.juegoFinalizado=false;
 				this.mikasaGana=false;
 				kyojinJefe = new Kyojin(0,0, this.velocidadJefe);
